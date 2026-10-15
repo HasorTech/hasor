@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>net.hasor</groupId>
-            <artifactId>hasor-core</artifactId>
+            <artifactId>hasor-boot</artifactId>
             <version>${hasor.version}</version>
         </dependency>
         <dependency>

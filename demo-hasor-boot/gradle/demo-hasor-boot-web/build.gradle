@@ -1,12 +1,17 @@
 plugins {
-    id 'java-library'
     id 'application'
     id 'net.hasor.boot'
 }
 
+configurations {
+    bootLoader
+}
+
 dependencies {
     implementation "net.hasor:hasor-boot-web-tomcat:${property('lib.hasor')}"
+    runtimeOnly 'com.google.code.gson:gson:2.14.0'
     runtimeOnly 'org.slf4j:slf4j-simple:1.7.30'
+    bootLoader "net.hasor:hasor-boot-loader:${property('lib.hasor')}"
 }
 
 application {
@@ -14,6 +19,6 @@ application {
 }
 
 tasks.named('bootJar') {
-    mainClass = application.mainClass
-    loaderClasspath.from(configurations.detachedConfiguration(dependencies.create("net.hasor:hasor-boot-loader:${project.property('lib.hasor')}")))
+    mainClass.set(application.mainClass)
+    loaderClasspath.from(configurations.bootLoader)
 }

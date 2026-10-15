@@ -8,25 +8,32 @@
  */
 package net.hasor.demo.boot;
 
+import net.hasor.boot.Boot;
+import net.hasor.boot.BootApplication;
 import net.hasor.cobble.logging.Logger;
 import net.hasor.cobble.logging.LoggerFactory;
-import net.hasor.core.*;
+import net.hasor.core.ApiBinder;
+import net.hasor.core.AppContext;
+import net.hasor.core.Inject;
 import net.hasor.core.Module;
 import net.hasor.core.info.Arguments;
+
 /**
  * Minimal executable Hasor Boot demo.
  * @author 赵永春 (zyc@hasor.net)
  * @version : 2026-06-16
  */
 public class DemoHasorBootApplication implements Module {
-    private static final Logger logger = LoggerFactory.getLogger(DemoHasorBootApplication.class);
+    private static final Logger       logger = LoggerFactory.getLogger(DemoHasorBootApplication.class);
     @Inject
-    private Arguments           arguments;
+    private              Arguments    arguments;
     @Inject
-    private HelloService        helloService;
+    private              HelloService helloService;
 
-    public static void main(String[] args) {
-        Hasor.run(args, DemoHasorBootApplication.class);
+    public static void main(String[] args) throws Exception {
+        try (BootApplication ignored = Boot.run(args, DemoHasorBootApplication.class)) {
+            // This one-shot command is executed by Module.onStart().
+        }
     }
 
     @Override

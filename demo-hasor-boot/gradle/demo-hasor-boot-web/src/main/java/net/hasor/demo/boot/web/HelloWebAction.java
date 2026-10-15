@@ -7,8 +7,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.demo.boot.web;
-import java.io.IOException;
-import net.hasor.web.Invoker;
 import net.hasor.web.annotation.Get;
 import net.hasor.web.annotation.MappingTo;
 
@@ -20,8 +18,7 @@ import net.hasor.web.annotation.MappingTo;
 @MappingTo("/hello")
 public class HelloWebAction {
     @Get
-    public void execute(Invoker invoker) throws IOException {
-        invoker.getHttpResponse().setContentType("text/plain;charset=UTF-8");
-        invoker.getHttpResponse().getWriter().write("hello Hasor Boot Web");
+    public String execute() {
+        return "hello Hasor Boot Web";
     }
 }
