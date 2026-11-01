@@ -9,7 +9,7 @@
 package net.hasor.core.spi.container;
 import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BindTypeTest {
     @Test

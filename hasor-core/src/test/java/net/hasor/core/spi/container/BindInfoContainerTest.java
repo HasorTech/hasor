@@ -21,7 +21,7 @@ import net.hasor.core.info.DefaultBindInfoProviderAdapter;
 import net.hasor.test.core.basic.pojo.PojoBean;
 import net.hasor.test.core.basic.pojo.SampleBean;
 import net.hasor.test.core.basic.pojo.SampleFace;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BindInfoContainerTest {
     @Test

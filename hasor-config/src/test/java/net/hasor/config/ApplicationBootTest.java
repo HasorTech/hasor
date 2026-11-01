@@ -9,8 +9,9 @@ package net.hasor.config;
 import net.hasor.config.application.SampleApplication;
 import net.hasor.config.application.child.ScannedService;
 import net.hasor.core.AppContext;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ApplicationBootTest {
     @Test
@@ -25,8 +26,8 @@ public class ApplicationBootTest {
         assertEquals(net.hasor.core.Hasor.create().buildSettings().getString("hasor.loadPackages"), ApplicationBoot.create(SampleApplication.class).buildSettings().getString("hasor.loadPackages"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void applicationShouldRequireConfigurationPrimarySource() {
-        ApplicationBoot.create(ScannedService.class);
+        assertThrows(IllegalArgumentException.class, () -> ApplicationBoot.create(ScannedService.class));
     }
 }

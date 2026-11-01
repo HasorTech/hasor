@@ -6,7 +6,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.config.exceptionconfig;
-
 import java.io.IOException;
 import net.hasor.config.Configuration;
 import net.hasor.config.web.Exception;

@@ -7,7 +7,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.core.spi.container;
-
 import java.util.Map;
 import net.hasor.core.AppContext;
 import net.hasor.core.AppContextWarp;
@@ -16,7 +15,7 @@ import net.hasor.test.core.aop.ignore.types.GrandFatherBean;
 import net.hasor.test.core.aop.ignore.types.JamesBean;
 import net.hasor.test.core.aop.ignore.types.WilliamSonBean;
 import net.hasor.test.core.basic.pojo.PojoBean;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class Context2MapTest {
     @Test

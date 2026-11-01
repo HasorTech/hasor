@@ -13,8 +13,8 @@ import net.hasor.config.methodscan.MethodOnlyController;
 import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
 import net.hasor.web.binder.MappingDef;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -48,7 +48,7 @@ public class MethodMappingScanTest {
             while (cause.getCause() != null) {
                 cause = cause.getCause();
             }
-            assertTrue(cause.getMessage(), cause.getMessage().contains("Conflicting auto-scanned route"));
+            assertTrue(cause.getMessage().contains("Conflicting auto-scanned route"), cause.getMessage());
         }
     }
 }

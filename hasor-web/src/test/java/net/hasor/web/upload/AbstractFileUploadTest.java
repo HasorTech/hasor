@@ -28,7 +28,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.powermock.api.mockito.PowerMockito;
+import org.mockito.Mockito;
 
 public class AbstractFileUploadTest extends AbstractTest {
     protected String md5(String datas) {
@@ -67,8 +67,8 @@ public class AbstractFileUploadTest extends AbstractTest {
             InputStream inputStream = httpExchange.getRequestBody();
             //
             HttpServletRequest mockRequest = mockRequest("post", new URL("http://www.hasor.net" + requestURI), headerMap, null, null);
-            PowerMockito.when(mockRequest.getInputStream()).thenReturn(new InnerInputStream(inputStream));
-            PowerMockito.when(mockRequest.getContentType()).thenReturn(httpExchange.getRequestHeaders().getFirst("Content-type"));
+            Mockito.when(mockRequest.getInputStream()).thenReturn(new InnerInputStream(inputStream));
+            Mockito.when(mockRequest.getContentType()).thenReturn(httpExchange.getRequestHeaders().getFirst("Content-type"));
             //
             AppContext appContext = buildWebAppContext("/META-INF/hasor-framework/web-hconfig.xml", apiBinder -> {
                 apiBinder.installModule(module);

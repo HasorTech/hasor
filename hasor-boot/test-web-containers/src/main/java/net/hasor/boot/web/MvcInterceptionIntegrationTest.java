@@ -27,9 +27,9 @@ import net.hasor.web.annotation.Async;
 import net.hasor.web.render.RenderEngine;
 import net.hasor.web.render.RenderInvoker;
 import net.hasor.web.render.RenderType;
-import org.junit.After;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /** Exercises MVC boundaries through a real HTTP connection in each supported container. */
 public abstract class MvcInterceptionIntegrationTest extends ContainerIntegrationTest {
@@ -166,7 +166,7 @@ public abstract class MvcInterceptionIntegrationTest extends ContainerIntegratio
         this.server.start();
     }
 
-    @After
+    @AfterEach
     public void stop() throws Exception {
         if (this.server != null) {
             this.server.stop();
@@ -184,7 +184,7 @@ public abstract class MvcInterceptionIntegrationTest extends ContainerIntegratio
             }
             try (InputStream stream = status >= 400 ? connection.getErrorStream() : connection.getInputStream()) {
                 String body = stream == null ? "" : new String(stream.readAllBytes(), StandardCharsets.UTF_8);
-                assertNotNull("Server callbacks did not complete", this.completedRequests.poll(3, TimeUnit.SECONDS));
+                assertNotNull(this.completedRequests.poll(3, TimeUnit.SECONDS), "Server callbacks did not complete");
                 return body;
             }
         } finally {

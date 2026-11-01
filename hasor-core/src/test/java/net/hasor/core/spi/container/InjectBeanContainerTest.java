@@ -25,7 +25,7 @@
 //import net.hasor.test.core.basic.inject.property.PropertyBeanByByInjectSettingConfValue;
 //import net.hasor.test.core.basic.pojo.PojoBean;
 //import net.hasor.test.core.enums.SelectEnum;
-//import org.junit.Test;
+//import org.junit.jupiter.api.Test;
 //import org.powermock.api.mockito.PowerMockito;
 //
 //import java.lang.reflect.Constructor;

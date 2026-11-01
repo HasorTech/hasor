@@ -25,8 +25,8 @@ import net.hasor.web.AbstractTest;
 import net.hasor.web.WebModule;
 import net.hasor.web.binder.OneConfig;
 import net.hasor.web.spi.AfterResponseListener;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 /**
  * @author 赵永春 (zyc@hasor.net)
@@ -87,9 +87,9 @@ public class RuntimeFilterTest extends AbstractTest {
         runtimeFilter.init(new OneConfig("", () -> RuntimeListener.getAppContext(servletContext)));
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/query_param.do?byteParam=123&intParam=321&strParam=5678"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
         mockCharacterEncoding(servletRequest, servletResponse);
-        FilterChain chain = PowerMockito.mock(FilterChain.class);
+        FilterChain chain = Mockito.mock(FilterChain.class);
         runtimeFilter.doFilter(servletRequest, servletResponse, chain);
         //
         Object o = reference.get();
@@ -122,9 +122,9 @@ public class RuntimeFilterTest extends AbstractTest {
 
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/query_param.do?byteParam=123&intParam=321&strParam=5678"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
         mockRenderResponse(servletResponse);
-        FilterChain chain = PowerMockito.mock(FilterChain.class);
+        FilterChain chain = Mockito.mock(FilterChain.class);
         runtimeFilter.doFilter(servletRequest, servletResponse, chain);
         //
         Object o = reference.get();
@@ -161,8 +161,8 @@ public class RuntimeFilterTest extends AbstractTest {
         //
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/query_param.do?byteParam=123&intParam=321&strParam=5678"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
-        FilterChain chain = PowerMockito.mock(FilterChain.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
+        FilterChain chain = Mockito.mock(FilterChain.class);
         try {
             runtimeFilter.doFilter(servletRequest, servletResponse, chain);
             assert false;
@@ -198,8 +198,8 @@ public class RuntimeFilterTest extends AbstractTest {
         //
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/query_param.do?byteParam=123&intParam=321&strParam=5678"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
-        FilterChain chain = PowerMockito.mock(FilterChain.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
+        FilterChain chain = Mockito.mock(FilterChain.class);
         try {
             runtimeFilter.doFilter(servletRequest, servletResponse, chain);
             assert false;
@@ -235,8 +235,8 @@ public class RuntimeFilterTest extends AbstractTest {
         //
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/query_param.do?byteParam=123&intParam=321&strParam=5678"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
-        FilterChain chain = PowerMockito.mock(FilterChain.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
+        FilterChain chain = Mockito.mock(FilterChain.class);
         try {
             runtimeFilter.doFilter(servletRequest, servletResponse, chain);
             assert false;
@@ -272,8 +272,8 @@ public class RuntimeFilterTest extends AbstractTest {
         //
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/query_param.do?byteParam=123&intParam=321&strParam=5678"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
-        FilterChain chain = PowerMockito.mock(FilterChain.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
+        FilterChain chain = Mockito.mock(FilterChain.class);
         try {
             runtimeFilter.doFilter(servletRequest, servletResponse, chain);
             assert false;

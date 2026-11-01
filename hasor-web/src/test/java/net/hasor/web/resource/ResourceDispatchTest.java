@@ -20,16 +20,15 @@ import net.hasor.web.WebModule;
 import net.hasor.web.annotation.Get;
 import net.hasor.web.binder.FilterDef;
 import net.hasor.web.binder.ResourceBinder;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class ResourceDispatchTest extends AbstractTest {
-    @Rule
-    public TemporaryFolder temporary = new TemporaryFolder();
+    @TempDir
+    public Path temporary;
 
     public static class Action {
         @Get
@@ -39,7 +38,7 @@ public class ResourceDispatchTest extends AbstractTest {
     }
 
     private Path directory(String name, String content) throws Exception {
-        Path root = temporary.newFolder(name).toPath();
+        Path root = Files.createDirectory(temporary.resolve(name));
         Files.writeString(root.resolve("app.txt"), content);
         Files.writeString(root.resolve("index.html"), "welcome");
         return root;
@@ -149,10 +148,11 @@ public class ResourceDispatchTest extends AbstractTest {
             context.genCaller(mockRequest("GET", new java.net.URL("http://localhost/assets/missing.txt")), missing).invoke(chain).get();
             org.mockito.Mockito.verify(missing).sendError(404);
             assertEquals(0, continuations.get());
+            assertTrue(filteredPaths.isEmpty());
             javax.servlet.http.HttpServletResponse unmatched = org.mockito.Mockito.mock(javax.servlet.http.HttpServletResponse.class);
             context.genCaller(mockRequest("GET", new java.net.URL("http://localhost/other")), unmatched).invoke(chain).get();
             assertEquals(1, continuations.get());
-            assertTrue(filteredPaths.isEmpty());
+            assertEquals(List.of("/other"), filteredPaths);
         }
     }
 

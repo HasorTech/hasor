@@ -6,15 +6,14 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.config;
-
 import java.net.URL;
 import java.net.URLClassLoader;
 import net.hasor.cobble.setting.Settings;
 import net.hasor.core.ApiBinder;
 import net.hasor.core.Hasor;
 import net.hasor.core.Module;
-import org.junit.Test;
-import static org.junit.Assert.assertSame;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.*;
 
 public class ConfigurationWithoutWebTest {

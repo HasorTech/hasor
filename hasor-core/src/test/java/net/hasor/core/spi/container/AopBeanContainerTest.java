@@ -22,8 +22,8 @@
 //import net.hasor.test.core.aop.ignore.thread.ThreadFooFunction;
 //import net.hasor.test.core.aop.ignore.types.*;
 //import net.hasor.test.core.basic.pojo.PojoBean;
-//import org.junit.Before;
-//import org.junit.Test;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
 //import org.powermock.api.mockito.PowerMockito;
 //
 //import java.lang.reflect.Method;
@@ -32,7 +32,7 @@
 //public class AopBeanContainerTest {
 //    private AppContext appContext = null;
 //
-//    @Before
+//    @BeforeEach
 //    public void beforeTest() {
 //        this.appContext = PowerMockito.mock(AppContext.class);
 //        PowerMockito.when(appContext.getClassLoader()).thenReturn(Thread.currentThread().getContextClassLoader());

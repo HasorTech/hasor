@@ -21,10 +21,10 @@ import net.hasor.web.annotation.Get;
 import net.hasor.web.binder.FilterDef;
 import net.hasor.web.binder.OneConfig;
 import net.hasor.web.invoker.InvokerContext;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import static net.hasor.web.render.RenderEngineTestSupport.renderEngine;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RenderPipelineTest extends AbstractTest {
     public static class Action {
@@ -144,8 +144,8 @@ public class RenderPipelineTest extends AbstractTest {
             binder.addRender("text").toProvider(() -> renderEngine("text/plain", (invoker, writer) -> renders.incrementAndGet()));
         })) {
             HttpServletRequest request = mockRequest("get", new URL("http://localhost/test"));
-            PowerMockito.when(request.isAsyncStarted()).thenReturn(true);
-            HttpServletResponse response = PowerMockito.mock(HttpServletResponse.class);
+            Mockito.when(request.isAsyncStarted()).thenReturn(true);
+            HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
             InvokerContext context = new InvokerContext();
             context.initContext(app, new OneConfig("", () -> app));
             assertEquals("ok", context.genCaller(request, response).invoke(null).get());

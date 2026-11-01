@@ -6,7 +6,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.config.autoscan;
-
 import java.util.concurrent.atomic.AtomicInteger;
 import net.hasor.config.Bean;
 import net.hasor.config.Configuration;

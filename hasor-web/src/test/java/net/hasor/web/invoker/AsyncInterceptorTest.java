@@ -13,10 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.servlet.AsyncContext;
 import javax.servlet.AsyncEvent;
 import javax.servlet.AsyncListener;
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.hasor.cobble.function.EFunction;
@@ -27,8 +30,9 @@ import net.hasor.web.*;
 import net.hasor.web.annotation.Any;
 import net.hasor.web.annotation.Async;
 import net.hasor.web.binder.OneConfig;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import net.hasor.web.startup.RuntimeFilter;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class AsyncInterceptorTest extends AbstractTest {
@@ -139,6 +143,45 @@ public class AsyncInterceptorTest extends AbstractTest {
             return async;
         });
         return async;
+    }
+
+    @Test
+    public void aFastAsyncFailureIsDispatchedOnceWithoutInvokingTheControllerAgain() throws Throwable {
+        AtomicInteger calls = new AtomicInteger();
+        IOException failure = new IOException("async controller failure");
+        try (AppContext app = Hasor.create(this.servlet30("/")).build((WebModule) binder -> {
+            binder.mappingTo("/test").with(new AsyncAction(invoker -> {
+                calls.incrementAndGet();
+                throw failure;
+            }));
+        })) {
+            HttpServletRequest request = this.mockRequest("GET", new URL("http://localhost/test"));
+            AsyncContext async = this.trackAsyncState(request);
+            when(request.getDispatcherType()).thenReturn(DispatcherType.REQUEST);
+            doAnswer(call -> {
+                call.<Runnable>getArgument(0).run();
+                return null;
+            }).when(async).start(any(Runnable.class));
+            HttpServletResponse response = mock(HttpServletResponse.class);
+            this.mockRenderResponse(response);
+            RuntimeFilter filter = new RuntimeFilter(app);
+            filter.init(new OneConfig("test", () -> app));
+            try {
+                FilterChain downstream = mock(FilterChain.class);
+                filter.doFilter(request, response, downstream);
+                assertEquals(1, calls.get());
+                verify(async).dispatch();
+
+                when(request.getDispatcherType()).thenReturn(DispatcherType.ASYNC);
+                assertSame(failure, assertThrows(IOException.class, () -> filter.doFilter(request, response, downstream)));
+                assertEquals(1, calls.get());
+                verify(async).dispatch();
+                verify(async, never()).complete();
+                verifyNoInteractions(downstream);
+            } finally {
+                filter.destroy();
+            }
+        }
     }
 
     @Test

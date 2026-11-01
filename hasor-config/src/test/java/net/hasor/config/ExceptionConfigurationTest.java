@@ -6,7 +6,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.config;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,8 +19,8 @@ import net.hasor.web.ExceptionHandler;
 import net.hasor.web.Invoker;
 import net.hasor.web.WebApiBinder;
 import net.hasor.web.binder.ExceptionDef;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ExceptionConfigurationTest {

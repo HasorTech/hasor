@@ -14,8 +14,8 @@ import net.hasor.test.web.actions.methodmapping.MethodMappedAction;
 import net.hasor.test.web.actions.methodmapping.PrefixedAction;
 import net.hasor.test.web.actions.methodmapping.StaticAction;
 import net.hasor.web.AbstractTest;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MethodMappingTest extends AbstractTest {
     @Test

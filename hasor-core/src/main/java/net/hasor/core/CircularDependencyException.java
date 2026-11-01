@@ -7,7 +7,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.core;
-
 import java.util.Collections;
 import java.util.List;
 

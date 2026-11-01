@@ -12,7 +12,7 @@ import java.util.Map;
 import net.hasor.test.web.upload.FileItemStreamUploadAction;
 import net.hasor.test.web.upload.FileItemUploadAction;
 import net.hasor.web.WebApiBinder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FileUploadTest extends AbstractFileUploadTest {
     @Test

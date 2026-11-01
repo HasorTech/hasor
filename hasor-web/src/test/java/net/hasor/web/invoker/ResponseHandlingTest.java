@@ -24,9 +24,9 @@ import net.hasor.web.render.RenderEngine;
 import net.hasor.web.render.RenderInvoker;
 import net.hasor.web.render.RenderType;
 import net.hasor.web.wrap.InvokerWrap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import static net.hasor.web.render.RenderEngineTestSupport.renderEngine;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ResponseHandlingTest extends AbstractTest {
     public static class ResponseAction {

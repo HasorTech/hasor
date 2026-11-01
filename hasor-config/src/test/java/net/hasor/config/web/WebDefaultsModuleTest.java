@@ -21,9 +21,9 @@ import net.hasor.web.binder.RenderDef;
 import net.hasor.web.render.RenderEngine;
 import net.hasor.web.render.RenderInvoker;
 import net.hasor.web.render.RenderProcessor;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WebDefaultsModuleTest {
     @MappingTo("/config-defaults-test")
@@ -47,11 +47,11 @@ public class WebDefaultsModuleTest {
     }
 
     private ServletContext servletContext() {
-        ServletContext context = PowerMockito.mock(ServletContext.class);
-        PowerMockito.when(context.getClassLoader()).thenReturn(getClass().getClassLoader());
-        PowerMockito.when(context.getContextPath()).thenReturn("/");
-        PowerMockito.when(context.getEffectiveMajorVersion()).thenReturn(3);
-        PowerMockito.when(context.getVirtualServerName()).thenReturn("test");
+        ServletContext context = Mockito.mock(ServletContext.class);
+        Mockito.when(context.getClassLoader()).thenReturn(getClass().getClassLoader());
+        Mockito.when(context.getContextPath()).thenReturn("/");
+        Mockito.when(context.getEffectiveMajorVersion()).thenReturn(3);
+        Mockito.when(context.getVirtualServerName()).thenReturn("test");
         return context;
     }
 
@@ -67,8 +67,8 @@ public class WebDefaultsModuleTest {
             binder.installModule(new WebDefaultsModule(options));
         })) {
             assertEquals(1, context.findBindingBean(MappingDef.class).size());
-            RenderInvoker invoker = PowerMockito.mock(RenderInvoker.class);
-            PowerMockito.when(invoker.get(Invoker.RETURN_DATA_KEY)).thenReturn(Map.of("name", "中文"));
+            RenderInvoker invoker = Mockito.mock(RenderInvoker.class);
+            Mockito.when(invoker.get(Invoker.RETURN_DATA_KEY)).thenReturn(Map.of("name", "中文"));
             StringWriter writer = new StringWriter();
             context.findBindingBean(RenderDef.class).stream().filter(def -> def.getRenderName().equals("json")).findFirst().orElseThrow().newEngine(context).process(invoker, writer);
             assertEquals("{\"name\":\"中文\"}", writer.toString());
@@ -99,7 +99,7 @@ public class WebDefaultsModuleTest {
         org.mockito.Mockito.verify(resources).scanResources(org.mockito.Mockito.eq(net.hasor.cobble.loader.MatchType.Prefix), org.mockito.Mockito.any(net.hasor.cobble.loader.Scanner.class), org.mockito.AdditionalMatchers.aryEq(new String[] { "example/core/*", "example/other/*" }));
     }
 
-    @org.junit.Test
+    @org.junit.jupiter.api.Test
     public void optionsLoadingPreservesValuesAndIgnoresBootKeys() {
         WebOptions options = new WebOptions().staticLocation("custom").spaPaths("/app/*");
         Settings settings = Hasor.create().addSettings(Settings.DefaultNameSpace, "hasor.boot.web.staticLocation", "legacy").addSettings(Settings.DefaultNameSpace, "hasor.config.web.scanExcludes", "example.Controller").buildSettings();

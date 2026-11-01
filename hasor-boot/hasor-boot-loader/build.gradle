@@ -48,3 +48,19 @@ tasks.named('test') {
     classpath = files(sourceSets.test.output, loaderJar) +
             (sourceSets.test.runtimeClasspath - sourceSets.main.output)
 }
+
+// Tests load the relocated loader, so coverage must analyze those same class bytes.
+def coverageClasses = loaderJar.map { archive ->
+    zipTree(archive.archiveFile.get().asFile).matching {
+        include 'net/hasor/boot/loader/**/*.class'
+        exclude 'net/hasor/boot/loader/internal/**'
+    }
+}
+tasks.withType(JacocoReport).configureEach {
+    dependsOn loaderJar
+    classDirectories.setFrom(coverageClasses)
+}
+tasks.withType(JacocoCoverageVerification).configureEach {
+    dependsOn loaderJar
+    classDirectories.setFrom(coverageClasses)
+}

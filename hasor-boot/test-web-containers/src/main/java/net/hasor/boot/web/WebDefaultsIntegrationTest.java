@@ -6,7 +6,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.boot.web;
-
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -14,9 +13,9 @@ import java.nio.charset.StandardCharsets;
 import net.hasor.boot.fixtures.defaults.DefaultApplication;
 import net.hasor.boot.fixtures.defaults.HelloController;
 import net.hasor.boot.fixtures.manual.ManualApplication;
-import org.junit.After;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /** The same HTTP contract runs against Tomcat, Jetty and Undertow. */
 public abstract class WebDefaultsIntegrationTest extends ContainerIntegrationTest {
@@ -30,7 +29,7 @@ public abstract class WebDefaultsIntegrationTest extends ContainerIntegrationTes
         this.server.start();
     }
 
-    @After
+    @AfterEach
     public void stop() throws Exception {
         if (this.server != null) {
             this.server.stop();
@@ -48,9 +47,9 @@ public abstract class WebDefaultsIntegrationTest extends ContainerIntegrationTes
     private String get(String path, int status, String mime) throws Exception {
         HttpURLConnection connection = request(path, "GET");
         try {
-            assertEquals(path, status, connection.getResponseCode());
+            assertEquals(status, connection.getResponseCode(), path);
             if (mime != null) {
-                assertTrue(connection.getContentType(), connection.getContentType().contains(mime));
+                assertTrue(connection.getContentType().contains(mime), connection.getContentType());
             }
             if (status != 200) {
                 return "";
@@ -182,7 +181,7 @@ public abstract class WebDefaultsIntegrationTest extends ContainerIntegrationTes
         for (String path : new String[] { "/%2e%2e/private-config.txt", "/%252e%252e/private-config.txt", "/%5c../private-config.txt", "/.env", "/app.js.map" }) {
             HttpURLConnection connection = request(path, "GET");
             try {
-                assertTrue(path, connection.getResponseCode() == 400 || connection.getResponseCode() == 404);
+                assertTrue(connection.getResponseCode() == 400 || connection.getResponseCode() == 404, path);
             } finally {
                 connection.disconnect();
             }

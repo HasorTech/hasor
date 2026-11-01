@@ -9,7 +9,7 @@
 package net.hasor.core.real;
 import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RealTest {
     @Test

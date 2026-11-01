@@ -23,6 +23,7 @@ import net.hasor.core.spi.SpiTrigger;
 import net.hasor.web.ServletVersion;
 import net.hasor.web.binder.OneConfig;
 import net.hasor.web.invoker.ExecuteCaller;
+import net.hasor.web.invoker.AsyncInvocationWorker;
 import net.hasor.web.invoker.InvokerContext;
 import net.hasor.web.spi.AfterResponseListener;
 import net.hasor.web.spi.BeforeRequestListener;
@@ -119,7 +120,7 @@ public class RuntimeFilter implements Filter {
             ExecuteCaller caller = this.invokerContext.genCaller(httpReq, httpRes);
             if (caller != null) {
                 Future<Object> resultData = caller.invoke(chain);
-                if (resultData != null && resultData.isDone()) {
+                if (resultData != null && !Boolean.TRUE.equals(httpReq.getAttribute(AsyncInvocationWorker.class.getName())) && resultData.isDone()) {
                     result = resultData.get();
                 }
             } else {

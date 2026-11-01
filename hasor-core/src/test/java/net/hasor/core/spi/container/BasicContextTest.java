@@ -17,7 +17,7 @@
 //import net.hasor.core.spi.ContextShutdownListener;
 //import net.hasor.core.spi.ContextStartListener;
 //import net.hasor.test.core.binder.TestBinder;
-//import org.junit.Test;
+//import org.junit.jupiter.api.Test;
 //
 //import java.util.concurrent.TimeUnit;
 //import java.util.concurrent.atomic.AtomicBoolean;

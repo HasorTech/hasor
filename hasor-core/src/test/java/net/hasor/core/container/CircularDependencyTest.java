@@ -7,13 +7,12 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.core.container;
-
 import net.hasor.core.AppContext;
 import net.hasor.core.CircularDependencyException;
 import net.hasor.core.Hasor;
 import net.hasor.core.Inject;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CircularDependencyTest {
     @Test

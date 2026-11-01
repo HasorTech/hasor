@@ -12,8 +12,8 @@ import java.nio.charset.StandardCharsets;
 import net.hasor.boot.Boot;
 import net.hasor.boot.BootApplication;
 import net.hasor.boot.fixtures.defaults.DefaultApplication;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /** 三种容器均通过统一 Boot 入口启动。 */
 public abstract class UnifiedBootIntegrationTest extends ContainerIntegrationTest {

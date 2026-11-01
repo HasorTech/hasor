@@ -25,9 +25,9 @@ import net.hasor.web.WebModule;
 import net.hasor.web.annotation.Any;
 import net.hasor.web.binder.OneConfig;
 import net.hasor.web.wrap.WebApiBinderWrap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import static net.hasor.web.render.RenderEngineTestSupport.renderEngine;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class HandlerInterceptorTest extends AbstractTest {
@@ -228,7 +228,7 @@ public class HandlerInterceptorTest extends AbstractTest {
                     expected.add("second.complete");
                 }
                 expected.add("first.complete");
-                assertEquals(phase, expected, events);
+                assertEquals(expected, events, phase);
             }
         }
     }

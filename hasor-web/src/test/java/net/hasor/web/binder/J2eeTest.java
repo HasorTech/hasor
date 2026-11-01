@@ -21,8 +21,8 @@ import net.hasor.web.AbstractTest;
 import net.hasor.web.Invoker;
 import net.hasor.web.InvokerChain;
 import net.hasor.web.InvokerConfig;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import static org.mockito.ArgumentMatchers.any;
 
 /**
@@ -34,10 +34,10 @@ public class J2eeTest extends AbstractTest {
     public void j2eeTest_1() throws Throwable {
         SimpleFilter j2eeFilter = new SimpleFilter();
         J2eeFilterAsFilter asFilter = new J2eeFilterAsFilter(() -> j2eeFilter);
-        OneConfig oneConfig1 = new OneConfig("test", () -> PowerMockito.mock(AppContext.class)) {{
+        OneConfig oneConfig1 = new OneConfig("test", () -> Mockito.mock(AppContext.class)) {{
             put("config_a", "a");
         }};
-        OneConfig oneConfig2 = new OneConfig("test", () -> PowerMockito.mock(AppContext.class)) {{
+        OneConfig oneConfig2 = new OneConfig("test", () -> Mockito.mock(AppContext.class)) {{
             put("config_a", "aa");
         }};
         //
@@ -53,7 +53,7 @@ public class J2eeTest extends AbstractTest {
         assert j2eeFilter.isDestroy();
         //
         assert !j2eeFilter.isDoCall();
-        asFilter.doInvoke(PowerMockito.mock(Invoker.class), PowerMockito.mock(InvokerChain.class));
+        asFilter.doInvoke(Mockito.mock(Invoker.class), Mockito.mock(InvokerChain.class));
         assert j2eeFilter.isDoCall();
     }
 
@@ -65,8 +65,8 @@ public class J2eeTest extends AbstractTest {
                 new ServletException("x"),          //
                 new InvocationTargetException(null) //
         };
-        InvokerChain chain = PowerMockito.mock(InvokerChain.class);
-        PowerMockito.when(chain.doNext(any())).thenAnswer(invocationOnMock -> {
+        InvokerChain chain = Mockito.mock(InvokerChain.class);
+        Mockito.when(chain.doNext(any())).thenAnswer(invocationOnMock -> {
             throw exceptions[index.get()];
         });
         //
@@ -76,21 +76,21 @@ public class J2eeTest extends AbstractTest {
         //
         try {
             index.set(0);
-            asFilter.doInvoke(PowerMockito.mock(Invoker.class), chain);
+            asFilter.doInvoke(Mockito.mock(Invoker.class), chain);
             assert false;
         } catch (Exception e) {
             assert e == exceptions[0];
         }
         try {
             index.set(1);
-            asFilter.doInvoke(PowerMockito.mock(Invoker.class), chain);
+            asFilter.doInvoke(Mockito.mock(Invoker.class), chain);
             assert false;
         } catch (Exception e) {
             assert e == exceptions[1];
         }
         try {
             index.set(2);
-            asFilter.doInvoke(PowerMockito.mock(Invoker.class), chain);
+            asFilter.doInvoke(Mockito.mock(Invoker.class), chain);
             assert false;
         } catch (Exception e) {
             assert e instanceof RuntimeException;
@@ -100,7 +100,7 @@ public class J2eeTest extends AbstractTest {
 
     @Test
     public void j2eeTest_3() throws Throwable {
-        OneConfig oneConfig = new OneConfig("test", () -> PowerMockito.mock(AppContext.class)) {{
+        OneConfig oneConfig = new OneConfig("test", () -> Mockito.mock(AppContext.class)) {{
             put("config_a", "a");
         }};
         SimpleServlet j2eeServlet = new SimpleServlet();
@@ -115,11 +115,11 @@ public class J2eeTest extends AbstractTest {
         assert j2eeServlet.getConfig() == null;
         //
         AppContext appContext = Hasor.create().build();
-        Invoker invoker = PowerMockito.mock(Invoker.class);
-        PowerMockito.when(invoker.getAppContext()).thenReturn(appContext);
+        Invoker invoker = Mockito.mock(Invoker.class);
+        Mockito.when(invoker.getAppContext()).thenReturn(appContext);
         //
         try {
-            mapping.doInvoke(PowerMockito.mock(HttpServletRequest.class), PowerMockito.mock(HttpServletResponse.class));
+            mapping.doInvoke(Mockito.mock(HttpServletRequest.class), Mockito.mock(HttpServletResponse.class));
             assert false;
         } catch (Exception e) {
             assert e.getMessage().equals("this Servlet uninitialized.");
@@ -131,7 +131,7 @@ public class J2eeTest extends AbstractTest {
         assert j2eeServlet.getConfig().getInitParameter("config_a").equals("a");
         assert !j2eeServlet.isDestroy();
         //
-        mapping.doInvoke(PowerMockito.mock(HttpServletRequest.class), PowerMockito.mock(HttpServletResponse.class));
+        mapping.doInvoke(Mockito.mock(HttpServletRequest.class), Mockito.mock(HttpServletResponse.class));
         assert j2eeServlet.isDoCall();
         //
         appContext.shutdown();

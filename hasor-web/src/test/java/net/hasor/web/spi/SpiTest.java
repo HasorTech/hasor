@@ -32,8 +32,8 @@ import net.hasor.web.Mapping;
 import net.hasor.web.MimeType;
 import net.hasor.web.binder.OneConfig;
 import net.hasor.web.invoker.InvokerContext;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 /**
  * @author 赵永春 (zyc@hasor.net)
@@ -83,9 +83,9 @@ public class SpiTest extends AbstractTest {
         //
         SpiTrigger spiTrigger = appContext.getInstance(SpiTrigger.class);
         //
-        HttpSessionEvent event_1 = PowerMockito.mock(HttpSessionEvent.class);
-        ServletContextEvent event_2 = PowerMockito.mock(ServletContextEvent.class);
-        ServletRequestEvent event_3 = PowerMockito.mock(ServletRequestEvent.class);
+        HttpSessionEvent event_1 = Mockito.mock(HttpSessionEvent.class);
+        ServletContextEvent event_2 = Mockito.mock(ServletContextEvent.class);
+        ServletRequestEvent event_3 = Mockito.mock(ServletRequestEvent.class);
         //
         spiTrigger.notifySpiWithoutResult(HttpSessionListener.class, listener -> listener.sessionCreated(event_1));
         spiTrigger.notifySpiWithoutResult(HttpSessionListener.class, listener -> listener.sessionDestroyed(event_1));
@@ -120,8 +120,8 @@ public class SpiTest extends AbstractTest {
         InvokerContext invokerContext = new InvokerContext();
         invokerContext.initContext(appContext, new OneConfig("", () -> appContext));
         //
-        HttpServletRequest request = PowerMockito.mock(HttpServletRequest.class);
-        HttpServletResponse response = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
         Invoker newInvoker = invokerContext.newInvoker(null, request, response);
         //
         assert newInvoker instanceof TestInvoker;
@@ -139,8 +139,8 @@ public class SpiTest extends AbstractTest {
         InvokerContext invokerContext = new InvokerContext();
         invokerContext.initContext(appContext, new OneConfig("", () -> appContext));
         //
-        HttpServletRequest request = PowerMockito.mock(HttpServletRequest.class);
-        HttpServletResponse response = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
         Invoker newInvoker = invokerContext.newInvoker(null, request, response);
         //
         assert !(newInvoker instanceof TestInvoker);

@@ -12,7 +12,7 @@ import java.util.Set;
 import net.hasor.core.AppContext;
 import net.hasor.test.web.actions.render.HtmlProduces;
 import net.hasor.web.WebApiBinder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NoRenderProducesTest extends RenderLayoutTest {
     //  [get]abc.do 因为扩展名不是 .html 因此无法匹配到 html 渲染器。但是标记了 @Produces 注解

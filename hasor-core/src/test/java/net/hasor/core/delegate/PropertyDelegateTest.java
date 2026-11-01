@@ -19,7 +19,7 @@ import net.hasor.test.core.basic.pojo.PojoBean;
 import net.hasor.test.core.basic.pojo.PojoBean1;
 import net.hasor.test.core.basic.pojo.PojoBean2;
 import net.hasor.test.core.basic.pojo.SampleBean;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PropertyDelegateTest {
     @Test

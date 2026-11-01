@@ -6,7 +6,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.boot.web;
-
 import javax.servlet.ServletContext;
 import net.hasor.config.web.WebOptions;
 import net.hasor.core.Module;

@@ -15,8 +15,8 @@ import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
 import net.hasor.web.WebApiBinder;
 import net.hasor.web.WebModule;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JettyWebServerTest {
     @Test

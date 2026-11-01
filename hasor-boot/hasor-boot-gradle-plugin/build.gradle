@@ -1,14 +1,22 @@
+import groovy.json.JsonSlurper
+
 plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
     id 'signing'
+    id 'jacoco'
 }
 
 def rootProperties = new Properties()
 file('../../gradle.properties').withInputStream { rootProperties.load(it) }
+def pomMetadata = new JsonSlurper().parse(file('../../pom.json'))
 
 group = 'net.hasor'
 version = rootProperties.getProperty('version')
+
+repositories {
+    mavenCentral()
+}
 
 java {
     withSourcesJar()
@@ -29,8 +37,38 @@ tasks.withType(Javadoc).configureEach {
     failOnError = false
 }
 
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}
+
 tasks.withType(GenerateModuleMetadata).configureEach {
     enabled = false
+}
+
+dependencies {
+    testImplementation platform("org.junit:junit-bom:${rootProperties.getProperty('lib.junit')}")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.platform:junit-platform-launcher'
+}
+
+jacoco {
+    toolVersion = rootProperties.getProperty('lib.jacoco')
+}
+tasks.named('test') {
+    finalizedBy tasks.named('jacocoTestReport')
+}
+tasks.named('jacocoTestReport') {
+    dependsOn tasks.named('test')
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+tasks.named('jacocoTestCoverageVerification') {
+    dependsOn tasks.named('test')
+}
+tasks.named('check') {
+    dependsOn tasks.named('jacocoTestReport'), tasks.named('jacocoTestCoverageVerification')
 }
 
 gradlePlugin {
@@ -47,24 +85,28 @@ publishing {
         pom {
             name = 'Hasor-Boot-Gradle-Plugin'
             description = 'Hasor Boot Gradle packaging plugin.'
-            url = 'https://www.hasor.net/'
+            url = pomMetadata.url
             licenses {
-                license {
-                    name = 'The Apache Software License, Version 2.0'
-                    url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                pomMetadata.licenses.each { licenseMetadata ->
+                    license {
+                        name = licenseMetadata.name
+                        url = licenseMetadata.url
+                    }
                 }
             }
             developers {
-                developer {
-                    name = '赵永春(Mr.Zhao)'
-                    email = 'zyc@hasor.net'
+                pomMetadata.developers.each { developerMetadata ->
+                    developer {
+                        name = developerMetadata.name
+                        email = developerMetadata.email
+                    }
                 }
             }
             scm {
-                connection = 'scm:git:git@gitee.com:zycgit/hasor.git'
-                developerConnection = 'scm:git:git@gitee.com:zycgit/hasor.git'
-                url = 'https://gitee.com/zycgit/hasor'
-                tag = 'HEAD'
+                connection = pomMetadata.scm.connection
+                developerConnection = pomMetadata.scm.developerConnection
+                url = pomMetadata.scm.url
+                tag = pomMetadata.scm.tag
             }
         }
     }

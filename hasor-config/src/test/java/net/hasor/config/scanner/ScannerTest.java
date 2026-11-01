@@ -6,7 +6,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.config.scanner;
-
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,8 +16,8 @@ import net.hasor.config.Configuration;
 import net.hasor.core.ApiBinder;
 import net.hasor.web.annotation.MappingTo;
 import net.hasor.web.annotation.MappingToGroup;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class ScannerTest {

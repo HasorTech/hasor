@@ -13,7 +13,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import net.hasor.core.AppContext;
 import net.hasor.web.AbstractTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class UriPatternMatcherTest extends AbstractTest {
     @Test

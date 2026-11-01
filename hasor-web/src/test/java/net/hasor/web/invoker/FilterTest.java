@@ -18,8 +18,8 @@ import net.hasor.test.web.filters.SimpleInvokerFilter;
 import net.hasor.web.AbstractTest;
 import net.hasor.web.WebApiBinder;
 import net.hasor.web.binder.OneConfig;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class FilterTest extends AbstractTest {
     @Test
@@ -35,7 +35,7 @@ public class FilterTest extends AbstractTest {
         }, servlet25("/"), AbstractTest.LoadModule.Web, AbstractTest.LoadModule.Render);
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/abc.do"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
         mockRenderResponse(servletResponse);
         //
         assert !j2eeFilter.isInit();
@@ -90,7 +90,7 @@ public class FilterTest extends AbstractTest {
         }, servlet25("/"), AbstractTest.LoadModule.Web, AbstractTest.LoadModule.Render);
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/abc.do"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
         mockRenderResponse(servletResponse);
         //
         InvokerContext invokerContext = new InvokerContext();
@@ -119,7 +119,7 @@ public class FilterTest extends AbstractTest {
         }, servlet25("/"), AbstractTest.LoadModule.Web, AbstractTest.LoadModule.Render);
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/abc/abc.do"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
         //
         InvokerContext invokerContext = new InvokerContext();
         invokerContext.initContext(appContext, new OneConfig("", () -> appContext));

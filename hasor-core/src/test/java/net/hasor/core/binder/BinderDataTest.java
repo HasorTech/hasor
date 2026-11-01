@@ -27,7 +27,7 @@ import net.hasor.test.core.MockBindInfo;
 import net.hasor.test.core.basic.pojo.PojoBeanTestBeanC;
 import net.hasor.test.core.basic.pojo.PojoBeanTestBeanP;
 import net.hasor.test.core.binder.TestBinder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BinderDataTest extends AbstractBinderDataTest {
     @Test

@@ -18,7 +18,7 @@ import net.hasor.core.TypeSupplier;
 import net.hasor.test.core.basic.pojo.*;
 import net.hasor.test.core.scope.AnnoMyBean;
 import net.hasor.test.core.scope.My;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BinderHasorApiTest {
     @Test

@@ -16,8 +16,8 @@ import net.hasor.test.web.filters.SimpleInvokerFilter;
 import net.hasor.web.AbstractTest;
 import net.hasor.web.Invoker;
 import net.hasor.web.InvokerChain;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 /**
  * @author 赵永春 (zyc@hasor.net)
@@ -37,10 +37,10 @@ public class DefFilterTest extends AbstractTest {
         Map<String, String> initParams = new HashMap<>();
         FilterDef def = new FilterDef(index, patternMatcher, initParams, bindInfo, () -> appContext);
         //
-        Invoker invoker1 = PowerMockito.mock(Invoker.class);
-        PowerMockito.when(invoker1.getRequestPath()).thenReturn("/test/");
-        Invoker invoker2 = PowerMockito.mock(Invoker.class);
-        PowerMockito.when(invoker2.getRequestPath()).thenReturn("/test/abc.do");
+        Invoker invoker1 = Mockito.mock(Invoker.class);
+        Mockito.when(invoker1.getRequestPath()).thenReturn("/test/");
+        Invoker invoker2 = Mockito.mock(Invoker.class);
+        Mockito.when(invoker2.getRequestPath()).thenReturn("/test/abc.do");
         //
         assert def.getIndex() == 123;
         assert !def.matchesInvoker(invoker1);
@@ -66,7 +66,7 @@ public class DefFilterTest extends AbstractTest {
         assert filter.isInit();
         assert filter.getConfig().getInitParameter("config_a").equals("a");
         //
-        def.doInvoke(invoker1, PowerMockito.mock(InvokerChain.class));
+        def.doInvoke(invoker1, Mockito.mock(InvokerChain.class));
         assert filter.isDoCall();
         //
         assert !filter.isDestroy();
@@ -91,7 +91,7 @@ public class DefFilterTest extends AbstractTest {
             def.init(new OneConfig("test", () -> appContext) {{
                 put("config_a", "a");
             }});
-            def.doInvoke(PowerMockito.mock(Invoker.class), PowerMockito.mock(InvokerChain.class));
+            def.doInvoke(Mockito.mock(Invoker.class), Mockito.mock(InvokerChain.class));
         } catch (Exception e) {
             e.printStackTrace();
             assert e.getMessage().equals("target InvokerFilter instance is null.");

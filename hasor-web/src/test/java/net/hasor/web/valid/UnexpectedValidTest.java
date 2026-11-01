@@ -15,7 +15,7 @@ import net.hasor.core.AppContext;
 import net.hasor.test.web.actions.valid.ValidRequestFieldAction;
 import net.hasor.web.AbstractTest;
 import net.hasor.web.WebApiBinder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class UnexpectedValidTest extends AbstractTest {
     @Test

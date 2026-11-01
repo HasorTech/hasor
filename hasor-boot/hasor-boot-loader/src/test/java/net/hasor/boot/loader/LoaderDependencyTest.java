@@ -13,8 +13,8 @@ import java.net.URLClassLoader;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LoaderDependencyTest {
     @Test
@@ -24,9 +24,9 @@ public class LoaderDependencyTest {
             List<String> classes = jar.stream().map(ZipEntry::getName).filter(name -> name.endsWith(".class")).toList();
             assertTrue(classes.contains("net/hasor/boot/loader/internal/cobble/logging/LoggerFactory.class"));
             for (String name : classes) {
-                assertTrue("Unexpected class: " + name, name.startsWith("net/hasor/boot/loader/"));
+                assertTrue(name.startsWith("net/hasor/boot/loader/"), "Unexpected class: " + name);
                 if (name.startsWith("net/hasor/boot/loader/internal/")) {
-                    assertTrue("Unused dependency class: " + name, name.startsWith("net/hasor/boot/loader/internal/cobble/logging/"));
+                    assertTrue(name.startsWith("net/hasor/boot/loader/internal/cobble/logging/"), "Unused dependency class: " + name);
                 }
             }
         }

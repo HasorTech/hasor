@@ -6,11 +6,10 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.config;
-
 import net.hasor.cobble.setting.Settings;
 import net.hasor.core.ApiBinder;
 import net.hasor.web.WebApiBinder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Mockito.*;
 

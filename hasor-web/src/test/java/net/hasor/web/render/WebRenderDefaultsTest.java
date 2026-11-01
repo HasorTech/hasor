@@ -15,9 +15,9 @@ import net.hasor.core.Hasor;
 import net.hasor.web.AbstractTest;
 import net.hasor.web.WebModule;
 import net.hasor.web.annotation.Get;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WebRenderDefaultsTest extends AbstractTest {
     public static class Action {
@@ -78,7 +78,7 @@ public class WebRenderDefaultsTest extends AbstractTest {
     @Test
     public void noneLeavesResponseUntouched() throws Throwable {
         try (AppContext app = context(Hasor.create(servlet25("/")).addSettings(Settings.DefaultNameSpace, "hasor.render.defaults.stringEngine", "none"))) {
-            javax.servlet.http.HttpServletResponse response = org.powermock.api.mockito.PowerMockito.mock(javax.servlet.http.HttpServletResponse.class);
+            javax.servlet.http.HttpServletResponse response = org.mockito.Mockito.mock(javax.servlet.http.HttpServletResponse.class);
             net.hasor.web.invoker.InvokerContext invokers = new net.hasor.web.invoker.InvokerContext();
             invokers.initContext(app, new net.hasor.web.binder.OneConfig("", () -> app));
             invokers.genCaller(mockRequest("get", new java.net.URL("http://localhost/return")), response).invoke(null).get();

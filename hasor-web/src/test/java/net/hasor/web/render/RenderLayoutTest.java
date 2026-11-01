@@ -25,7 +25,7 @@ import net.hasor.test.web.render.TestRenderEngine;
 import net.hasor.web.AbstractTest;
 import net.hasor.web.WebApiBinder;
 import net.hasor.web.render.text.TextRenderEngine;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RenderLayoutTest extends AbstractTest {
     protected AppContext renderAppContext(boolean enableLayout, RenderEngine renderEngine, Module... module) {

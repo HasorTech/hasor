@@ -10,7 +10,7 @@ package net.hasor.core.spi.container;
 import net.hasor.core.Hasor;
 import net.hasor.test.core.docs.CustomBean;
 import net.hasor.test.core.docs.OrderManager;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DocsTest {
     @Test

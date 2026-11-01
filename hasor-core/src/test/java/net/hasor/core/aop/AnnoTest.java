@@ -16,7 +16,7 @@ import net.hasor.test.core.aop.custom.ClassMyAopBean;
 import net.hasor.test.core.aop.custom.MethodMyAopBean;
 import net.hasor.test.core.aop.custom.MyAop;
 import net.hasor.test.core.aop.custom.MyAopInterceptor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AnnoTest {
     @Test

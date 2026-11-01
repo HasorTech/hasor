@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.hasor.cobble.StringUtils;
@@ -26,6 +27,7 @@ import net.hasor.core.AppContext;
 import net.hasor.web.Invoker;
 import net.hasor.web.annotation.Produces;
 import net.hasor.web.binder.RenderDef;
+import net.hasor.web.invoker.AsyncInvocationWorker;
 import net.hasor.web.render.none.NoopRenderEngine;
 
 /**
@@ -143,7 +145,11 @@ public final class RenderProcessor {
         Method method = invoker.ownerMapping() == null ? null : invoker.ownerMapping().findMethod(invoker.getHttpRequest());
         if (method != null) {
             HttpServletResponse response = invoker.getHttpResponse();
-            if ((response instanceof OwnedResponse owned && owned.isOwned()) || response.getStatus() == 204 || response.getStatus() == 304 || invoker.getHttpRequest().isAsyncStarted()) {
+            boolean applicationAsync = invoker.getHttpRequest().isAsyncStarted() && !Boolean.TRUE.equals(invoker.getHttpRequest().getAttribute(AsyncInvocationWorker.class.getName()));
+            if ((response instanceof OwnedResponse owned && owned.isOwned()) || response.getStatus() == 204 || response.getStatus() == 304 || applicationAsync) {
+                return returnData;
+            }
+            if (returnData == null && Arrays.stream(method.getParameterTypes()).anyMatch(ServletResponse.class::isAssignableFrom)) {
                 return returnData;
             }
             RenderType renderType = findRenderType(method);

@@ -12,8 +12,8 @@ import net.hasor.core.AppContext;
 import net.hasor.core.CircularDependencyException;
 import net.hasor.core.DependsOn;
 import net.hasor.core.Hasor;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DependsOnConfigurationTest {
     private static final List<String> EVENTS = new ArrayList<>();

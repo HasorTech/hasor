@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.hasor.cobble.setting.Settings;
 import net.hasor.core.*;
 import net.hasor.core.Module;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ConfigurationModuleTest {
     @Test

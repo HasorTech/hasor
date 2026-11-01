@@ -19,14 +19,14 @@ import net.hasor.core.container.ScopeContainer;
 import net.hasor.core.container.SpiCallerContainer;
 import net.hasor.core.info.DefaultBindInfoProviderAdapter;
 import net.hasor.core.info.GenerateBeanID;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 public class AbstractBinderDataTest {
     protected Predicate<Class<?>>                             ignoreMatcher;
     protected AtomicReference<DefaultBindInfoProviderAdapter> reference;
     protected ApiBinderWrap                                   binder;
 
-    @Before
+    @BeforeEach
     public void beforeTest() throws IOException {
         this.reference = new AtomicReference<>();
         SpiCallerContainer spiContainer = new SpiCallerContainer();

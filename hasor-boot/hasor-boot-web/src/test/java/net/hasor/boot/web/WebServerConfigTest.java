@@ -12,8 +12,8 @@ import net.hasor.cobble.setting.Settings;
 import net.hasor.core.ApiBinder;
 import net.hasor.core.Hasor;
 import net.hasor.core.Module;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WebServerConfigTest {
     @Test
@@ -59,9 +59,9 @@ public class WebServerConfigTest {
         assertTrue(config.getScanExcludes().contains("example.Current"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void refusesClasspathRootExposure() {
-        new WebServerConfig().staticLocation("/");
+        assertThrows(IllegalArgumentException.class, () -> new WebServerConfig().staticLocation("/"));
     }
 
     @Test

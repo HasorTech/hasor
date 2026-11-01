@@ -16,8 +16,8 @@ import javax.servlet.http.HttpSessionEvent;
 import net.hasor.core.AppContext;
 import net.hasor.web.AbstractTest;
 import net.hasor.web.ServletVersion;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 /**
  * @author 赵永春 (zyc@hasor.net)
@@ -87,17 +87,17 @@ public class RuntimeListenerTest extends AbstractTest {
         assert WebSpiTest.spiCall.size() == 1;
         assert WebSpiTest.spiCall.contains("ServletContextListener.contextInitialized");
         //
-        listener.sessionCreated(PowerMockito.mock(HttpSessionEvent.class));
+        listener.sessionCreated(Mockito.mock(HttpSessionEvent.class));
         assert WebSpiTest.spiCall.size() == 2;
         assert WebSpiTest.spiCall.contains("HttpSessionListener.sessionCreated");
-        listener.sessionDestroyed(PowerMockito.mock(HttpSessionEvent.class));
+        listener.sessionDestroyed(Mockito.mock(HttpSessionEvent.class));
         assert WebSpiTest.spiCall.size() == 3;
         assert WebSpiTest.spiCall.contains("HttpSessionListener.sessionDestroyed");
         //
-        listener.requestInitialized(PowerMockito.mock(ServletRequestEvent.class));
+        listener.requestInitialized(Mockito.mock(ServletRequestEvent.class));
         assert WebSpiTest.spiCall.size() == 4;
         assert WebSpiTest.spiCall.contains("ServletRequestListener.requestInitialized");
-        listener.requestDestroyed(PowerMockito.mock(ServletRequestEvent.class));
+        listener.requestDestroyed(Mockito.mock(ServletRequestEvent.class));
         assert WebSpiTest.spiCall.size() == 5;
         assert WebSpiTest.spiCall.contains("ServletRequestListener.requestDestroyed");
         //

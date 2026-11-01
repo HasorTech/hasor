@@ -7,7 +7,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.core.aop;
-
 import java.util.ArrayList;
 import java.util.List;
 import net.hasor.cobble.dynamic.DynamicClass;
@@ -16,7 +15,7 @@ import net.hasor.core.Hasor;
 import net.hasor.core.aop.fixture.AopBean;
 import net.hasor.core.aop.fixture.ClassAnnoInterceptor;
 import net.hasor.core.aop.fixture.MethodAnnoInterceptor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AopModuleTest {
     @Test

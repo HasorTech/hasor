@@ -7,7 +7,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.boot.gradle;
-
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaPlugin;

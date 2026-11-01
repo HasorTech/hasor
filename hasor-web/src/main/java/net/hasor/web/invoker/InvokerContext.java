@@ -10,7 +10,9 @@ package net.hasor.web.invoker;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import javax.servlet.DispatcherType;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import net.hasor.cobble.concurrent.future.BasicFuture;
 import net.hasor.cobble.logging.Logger;
@@ -93,6 +95,16 @@ public class InvokerContext {
     }
 
     public ExecuteCaller genCaller(HttpServletRequest httpReq, HttpServletResponse httpRes) {
+        if (httpReq.getDispatcherType() == DispatcherType.ASYNC && httpReq.getAttribute(InvokerCaller.ASYNC_FAILURE_ATTRIBUTE) instanceof Throwable failure) {
+            httpReq.removeAttribute(InvokerCaller.ASYNC_FAILURE_ATTRIBUTE);
+            httpReq.removeAttribute(AsyncInvocationWorker.class.getName());
+            return chain -> {
+                BasicFuture<Object> future = new BasicFuture<>();
+                future.failed(failure);
+                return future;
+            };
+        }
+
         Mapping foundDefine = null;
         for (Mapping define : this.invokeArray) {
             if (define.matchingMapping(httpReq)) {
@@ -101,14 +113,30 @@ public class InvokerContext {
             }
         }
 
+        // Containers can leave the request's path scope before an async worker starts.
+        if (foundDefine != null && foundDefine.isAsync(httpReq)) {
+            String contextPath = httpReq.getContextPath();
+            httpReq = new HttpServletRequestWrapper(httpReq) {
+                @Override
+                public String getContextPath() {
+                    return contextPath;
+                }
+            };
+        }
+
         Invoker invoker = this.newInvoker(foundDefine, httpReq, httpRes);
         ExecuteCaller ec = null;
         if (foundDefine == null) {
             ec = (chain) -> {
                 BasicFuture<Object> future = new BasicFuture<>();
                 try {
-                    if (!this.resourceProcessor.handle(invoker) && chain != null) {
-                        chain.doFilter(invoker.getHttpRequest(), invoker.getHttpResponse());
+                    if (!this.resourceProcessor.handle(invoker)) {
+                        new InvokerChainInvocation(this.filters, current -> {
+                            if (chain != null) {
+                                chain.doFilter(current.getHttpRequest(), current.getHttpResponse());
+                            }
+                            return null;
+                        }).doNext(invoker);
                     }
                     future.completed(null);
                 } catch (Throwable e) {

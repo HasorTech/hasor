@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.hasor.core.EventContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SyncEventTest {
     @Test

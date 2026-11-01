@@ -9,7 +9,7 @@
 package net.hasor.core.binder;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class InvocationHandlerTest extends AbstractBinderDataTest {
     @Test

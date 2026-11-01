@@ -22,8 +22,8 @@ import net.hasor.test.web.render.SimpleRenderEngine;
 import net.hasor.web.AbstractTest;
 import net.hasor.web.render.Render;
 import net.hasor.web.render.RenderEngine;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 /**
  * @author 赵永春 (zyc@hasor.net)
@@ -131,7 +131,7 @@ public class RenderBinderTest extends AbstractTest {
     @Test
     public void renderTest_4() {
         AppContext appContext = buildWebAppContext(apiBinder -> {
-            apiBinder.addRender("htm").toInstance(PowerMockito.mock(RenderEngine.class));
+            apiBinder.addRender("htm").toInstance(Mockito.mock(RenderEngine.class));
         }, servlet30("/"), LoadModule.Web, LoadModule.Render);
         //
         List<FilterDef> defList = appContext.findBindingBean(FilterDef.class);

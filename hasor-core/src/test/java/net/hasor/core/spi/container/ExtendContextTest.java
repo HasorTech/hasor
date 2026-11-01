@@ -10,7 +10,7 @@ package net.hasor.core.spi.container;
 import net.hasor.core.Hasor;
 import net.hasor.core.TypeSupplier;
 import net.hasor.test.core.basic.pojo.PojoBean;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ExtendContextTest {
     @Test

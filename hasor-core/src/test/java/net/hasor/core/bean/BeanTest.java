@@ -12,7 +12,7 @@ import net.hasor.core.Hasor;
 import net.hasor.test.core.basic.factory.FaceFactory;
 import net.hasor.test.core.basic.pojo.SampleBean;
 import net.hasor.test.core.basic.pojo.SampleFace;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BeanTest {
     @Test

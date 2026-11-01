@@ -6,15 +6,14 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.boot.web;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import net.hasor.boot.fixtures.render.RenderApplication;
 import net.hasor.core.Hasor;
-import org.junit.After;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class RenderDefaultsIntegrationTest extends ContainerIntegrationTest {
     private WebServer server;
@@ -27,7 +26,7 @@ public abstract class RenderDefaultsIntegrationTest extends ContainerIntegration
         this.server.start();
     }
 
-    @After
+    @AfterEach
     public void stop() throws Exception {
         if (this.server != null) {
             this.server.stop();
@@ -46,11 +45,11 @@ public abstract class RenderDefaultsIntegrationTest extends ContainerIntegration
         try {
             assertEquals(200, c.getResponseCode());
             if (mime != null) {
-                assertTrue(c.getContentType(), c.getContentType().contains(mime));
+                assertTrue(c.getContentType().contains(mime), c.getContentType());
             }
             byte[] body = c.getInputStream().readAllBytes();
             if (body.length > 0 && charset != null) {
-                assertTrue(c.getContentType(), c.getContentType().toUpperCase().contains(charset.toUpperCase()));
+                assertTrue(c.getContentType().toUpperCase().contains(charset.toUpperCase()), c.getContentType());
                 assertEquals(body.length, c.getContentLength());
             }
             return new String(body, Charset.forName(charset == null ? "UTF-8" : charset));

@@ -22,8 +22,8 @@ import net.hasor.web.WebApiBinder;
 import net.hasor.web.WebModule;
 import net.hasor.web.annotation.Get;
 import net.hasor.web.annotation.MappingTo;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TomcatWebServerTest {
     @Test

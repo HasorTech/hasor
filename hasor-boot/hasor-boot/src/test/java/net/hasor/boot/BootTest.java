@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.hasor.config.Bean;
 import net.hasor.config.Configuration;
 import net.hasor.core.Module;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BootTest {
     @Configuration

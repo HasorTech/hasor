@@ -9,14 +9,14 @@
 package net.hasor.test.web.invoker;
 import net.hasor.web.Invoker;
 import net.hasor.web.InvokerCreator;
-import org.powermock.api.mockito.PowerMockito;
+import org.mockito.Mockito;
 
 public class TestInvokerCreater implements InvokerCreator {
     @Override
     public Invoker createExt(Invoker invoker) {
-        TestInvoker2 inv = PowerMockito.mock(TestInvoker2.class);
-        PowerMockito.when(inv.hello()).thenReturn("hello");
-        PowerMockito.when(inv.word()).thenReturn("word");
+        TestInvoker2 inv = Mockito.mock(TestInvoker2.class);
+        Mockito.when(inv.hello()).thenReturn("hello");
+        Mockito.when(inv.word()).thenReturn("word");
         return inv;
     }
 }

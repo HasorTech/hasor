@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Map;
 import net.hasor.web.Invoker;
 import net.hasor.web.render.RenderInvoker;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AutoJsonRenderEngineTest {
     private static final String[] LIBRARIES = { "com.fasterxml.jackson.", "com.google.gson.", "com.alibaba.fastjson.", "com.alibaba.fastjson2." };
@@ -67,16 +67,16 @@ public class AutoJsonRenderEngineTest {
         delegate.setAccessible(true);
         Object selected = delegate.get(engine);
         assertEquals(expected, selected.getClass().getSimpleName());
-        RenderInvoker invoker = PowerMockito.mock(RenderInvoker.class);
-        PowerMockito.when(invoker.get(Invoker.RETURN_DATA_KEY)).thenReturn(Map.of("name", "中文"));
+        RenderInvoker invoker = Mockito.mock(RenderInvoker.class);
+        Mockito.when(invoker.get(Invoker.RETURN_DATA_KEY)).thenReturn(Map.of("name", "中文"));
         StringWriter writer = new StringWriter();
         engine.process(invoker, writer);
         assertEquals("{\"name\":\"中文\"}", writer.toString());
-        PowerMockito.when(invoker.get(Invoker.RETURN_DATA_KEY)).thenReturn(List.of(1, 2));
+        Mockito.when(invoker.get(Invoker.RETURN_DATA_KEY)).thenReturn(List.of(1, 2));
         writer = new StringWriter();
         engine.process(invoker, writer);
         assertEquals("[1,2]", writer.toString());
-        PowerMockito.when(invoker.get(Invoker.RETURN_DATA_KEY)).thenReturn(null);
+        Mockito.when(invoker.get(Invoker.RETURN_DATA_KEY)).thenReturn(null);
         writer = new StringWriter();
         engine.process(invoker, writer);
         assertEquals("null", writer.toString());

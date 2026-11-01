@@ -11,7 +11,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.hasor.cobble.concurrent.future.FutureCallback;
 import net.hasor.core.EventContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TaskTest {
     @Test

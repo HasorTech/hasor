@@ -12,8 +12,8 @@ import net.hasor.cobble.dynamic.MethodInterceptor;
 import net.hasor.cobble.dynamic.MethodInvocation;
 import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AopCoreIntegrationTest {
     @Test

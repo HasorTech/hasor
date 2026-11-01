@@ -11,8 +11,8 @@ import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
 import net.hasor.web.AbstractTest;
 import net.hasor.web.binder.ResourceDef;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ResourceProcessorTest extends AbstractTest {
     @Test

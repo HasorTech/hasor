@@ -24,7 +24,7 @@ import net.hasor.web.AbstractTest;
 import net.hasor.web.ServletVersion;
 import net.hasor.web.annotation.MappingTo;
 import net.hasor.web.startup.RuntimeFilter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author 赵永春 (zyc@hasor.net)
@@ -37,8 +37,8 @@ public class MappingBinderTest extends AbstractTest {
             binder.setEncodingCharacter("UTF-8", "UTF-8");
             binder.setEncodingCharacter("GB18030", "UTF-16LE");
         }, servlet25("/"), LoadModule.Web)) {
-            org.junit.Assert.assertEquals("GB18030", context.findBindingBean(RuntimeFilter.HTTP_REQUEST_ENCODING_KEY, String.class));
-            org.junit.Assert.assertEquals("UTF-16LE", context.findBindingBean(RuntimeFilter.HTTP_RESPONSE_ENCODING_KEY, String.class));
+            org.junit.jupiter.api.Assertions.assertEquals("GB18030", context.findBindingBean(RuntimeFilter.HTTP_REQUEST_ENCODING_KEY, String.class));
+            org.junit.jupiter.api.Assertions.assertEquals("UTF-16LE", context.findBindingBean(RuntimeFilter.HTTP_RESPONSE_ENCODING_KEY, String.class));
         }
     }
 

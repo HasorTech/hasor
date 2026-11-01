@@ -13,20 +13,20 @@ import net.hasor.cobble.setting.Settings;
 import net.hasor.core.AppContext;
 import net.hasor.web.AbstractTest;
 import net.hasor.web.Invoker;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class RenderBasicTest extends AbstractTest {
     @Test
     public void renderInvoker_params() throws Throwable {
         //
         HttpServletRequest request = mockRequest("get", new URL("http://www.hasor.net/abc.do?a=1&b=2"));
-        Invoker invoker = PowerMockito.mock(Invoker.class);
-        PowerMockito.when(invoker.getHttpRequest()).thenReturn(request);
-        AppContext appContext = PowerMockito.mock(AppContext.class);
-        Settings settings = PowerMockito.mock(Settings.class);
-        PowerMockito.when(invoker.getAppContext()).thenReturn(appContext);
-        PowerMockito.when(appContext.getSettings()).thenReturn(settings);
+        Invoker invoker = Mockito.mock(Invoker.class);
+        Mockito.when(invoker.getHttpRequest()).thenReturn(request);
+        AppContext appContext = Mockito.mock(AppContext.class);
+        Settings settings = Mockito.mock(Settings.class);
+        Mockito.when(invoker.getAppContext()).thenReturn(appContext);
+        Mockito.when(appContext.getSettings()).thenReturn(settings);
         RenderInvokerSupplier supplier = new RenderInvokerSupplier(invoker);
         //
         assert supplier.get("req_a").equals("1");

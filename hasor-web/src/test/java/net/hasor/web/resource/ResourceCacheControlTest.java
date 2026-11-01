@@ -22,15 +22,14 @@ import net.hasor.web.DelegatingServletOutputStream;
 import net.hasor.web.WebModule;
 import net.hasor.web.binder.OneConfig;
 import net.hasor.web.invoker.InvokerContext;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 public class ResourceCacheControlTest extends AbstractTest {
-    @Rule
-    public TemporaryFolder temporary = new TemporaryFolder();
+    @TempDir
+    public Path temporary;
 
     @Test
     public void typedPolicyReachesGetHeadAndConditionalResponses() throws Throwable {
@@ -57,7 +56,7 @@ public class ResourceCacheControlTest extends AbstractTest {
     }
 
     private Path directory() throws Exception {
-        Path root = this.temporary.newFolder().toPath();
+        Path root = Files.createTempDirectory(this.temporary, "resources-");
         Files.writeString(root.resolve("app.txt"), "asset");
         return root;
     }

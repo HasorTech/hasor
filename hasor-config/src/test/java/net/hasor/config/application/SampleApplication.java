@@ -6,7 +6,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.config.application;
-
 import net.hasor.config.Configuration;
 
 @Configuration

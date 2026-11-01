@@ -10,8 +10,13 @@ package net.hasor.web.invoker;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import javax.servlet.AsyncContext;
+import javax.servlet.AsyncEvent;
+import javax.servlet.AsyncListener;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +36,7 @@ import net.hasor.web.render.RenderProcessor;
  * @version : 2014年8月27日
  */
 class InvokerCaller extends InvokerCallerParamsBuilder implements ExecuteCaller {
+    static final     String               ASYNC_FAILURE_ATTRIBUTE = InvokerCaller.class.getName() + ".failure";
     protected static Logger               logger          = LoggerFactory.getLogger(InvokerCaller.class);
     private          FilterDef[]          filterArrays    = null;
     private          Supplier<Invoker>    invokerSupplier = null;
@@ -63,14 +69,34 @@ class InvokerCaller extends InvokerCallerParamsBuilder implements ExecuteCaller 
         if (version.ge(ServletVersion.V3_0) && needAsync) {
             // .必须满足: Servlet3.x、环境支持异步Servlet、目标开启了Servlet3
             AsyncContext asyncContext = httpRequest.startAsync(httpRequest, invoker.getHttpResponse());
+            httpRequest.setAttribute(AsyncInvocationWorker.class.getName(), Boolean.TRUE);
             asyncContext.start(new AsyncInvocationWorker(asyncContext, targetMethod) {
+                private Object result;
+                private Throwable failure;
+
                 public void doWork(Method targetMethod) throws Throwable {
-                    future.completed(invoke(targetMethod, invoker));
+                    this.result = HttpParameters.executeWorker(invoker, () -> invoke(targetMethod, invoker, true));
                 }
 
                 @Override
                 public void doWorkWhenError(Method targetMethod, Throwable e) {
-                    future.failed(e);
+                    httpRequest.setAttribute(ASYNC_FAILURE_ATTRIBUTE, e);
+                    this.failure = e;
+                }
+
+                @Override
+                protected void finish(boolean success) {
+                    try {
+                        super.finish(success);
+                    } catch (RuntimeException | Error e) {
+                        future.failed(e);
+                        throw e;
+                    }
+                    if (success) {
+                        future.completed(this.result);
+                    } else {
+                        future.failed(this.failure);
+                    }
                 }
             });
             return future;
@@ -78,7 +104,7 @@ class InvokerCaller extends InvokerCallerParamsBuilder implements ExecuteCaller 
 
         // .同步调用
         try {
-            Object invoke = invoke(targetMethod, invoker);
+            Object invoke = invoke(targetMethod, invoker, false);
             future.completed(invoke);
         } catch (Throwable e) {
             future.failed(e);
@@ -87,7 +113,7 @@ class InvokerCaller extends InvokerCallerParamsBuilder implements ExecuteCaller 
     }
 
     /** 执行调用 */
-    private Object invoke(final Method targetMethod, final Invoker invoker) throws Throwable {
+    private Object invoke(final Method targetMethod, final Invoker invoker, boolean frameworkAsync) throws Throwable {
         // .准备过滤器链
         final InvokerChain ic = i -> {
             Object targetObject = i.getAppContext().getInstance(i.ownerMapping().getTargetType());
@@ -138,6 +164,11 @@ class InvokerCaller extends InvokerCallerParamsBuilder implements ExecuteCaller 
                     result = ic.doNext(i);
                     i.put(Invoker.RETURN_DATA_KEY, result);
 
+                    // Application-managed async owns the response and completes MVC with its async cycle.
+                    if (!frameworkAsync && i.getHttpRequest().isAsyncStarted()) {
+                        return result;
+                    }
+
                     // MVC: postHandle
                     for (int index = entered - 1; index >= 0; index--) {
                         this.interceptors[index].postHandle(i, result);
@@ -162,17 +193,54 @@ class InvokerCaller extends InvokerCallerParamsBuilder implements ExecuteCaller 
                 completionFailure = e;
                 throw e;
             } finally {
-                for (int index = entered - 1; index >= 0; index--) {
-                    try {
-                        this.interceptors[index].afterCompletion(i, completionFailure);
-                    } catch (Throwable e) {
-                        logger.error("MVC interceptor completion failed", e);
-                    }
+                if (completionFailure == null && !frameworkAsync && i.getHttpRequest().isAsyncStarted()) {
+                    this.deferCompletion(i, entered);
+                } else {
+                    this.afterCompletion(i, entered, completionFailure);
                 }
             }
         };
 
         return new InvokerChainInvocation(this.filterArrays, last).doNext(invoker);
+    }
+
+    private void deferCompletion(Invoker invoker, int entered) {
+        invoker.getHttpRequest().getAsyncContext().addListener(new AsyncListener() {
+            private final AtomicBoolean completed = new AtomicBoolean();
+            private final AtomicReference<Throwable> failure = new AtomicReference<>();
+
+            @Override
+            public void onComplete(AsyncEvent event) {
+                if (this.completed.compareAndSet(false, true)) {
+                    afterCompletion(invoker, entered, this.failure.get());
+                }
+            }
+
+            @Override
+            public void onTimeout(AsyncEvent event) {
+                this.failure.compareAndSet(null, new TimeoutException("Asynchronous request timed out"));
+            }
+
+            @Override
+            public void onError(AsyncEvent event) {
+                this.failure.compareAndSet(null, event.getThrowable());
+            }
+
+            @Override
+            public void onStartAsync(AsyncEvent event) {
+                event.getAsyncContext().addListener(this);
+            }
+        });
+    }
+
+    private void afterCompletion(Invoker invoker, int entered, Throwable failure) {
+        for (int index = entered - 1; index >= 0; index--) {
+            try {
+                this.interceptors[index].afterCompletion(invoker, failure);
+            } catch (Throwable e) {
+                logger.error("MVC interceptor completion failed", e);
+            }
+        }
     }
 
     private Object handleException(Invoker invoker, Throwable e) throws Throwable {

@@ -17,7 +17,7 @@
 //import net.hasor.test.core.basic.pojo.PojoBean;
 //import net.hasor.test.core.scope.AnnoSingletonBean;
 //import net.hasor.test.core.scope.CustomHashBean;
-//import org.junit.Test;
+//import org.junit.jupiter.api.Test;
 //
 //import javax.inject.Singleton;
 //import java.io.File;

@@ -6,7 +6,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.boot.web;
-
 import net.hasor.config.web.WebDefaultsModule;
 import net.hasor.core.Module;
 import net.hasor.web.WebApiBinder;

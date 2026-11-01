@@ -1,18 +1,17 @@
 package net.hasor.boot.web;
-
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Enumeration;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WebServerProviderSelectionTest {
-    @Rule
-    public TemporaryFolder temporary = new TemporaryFolder();
+    @TempDir
+    public Path temporary;
 
     public static class FirstProvider extends WebServerConfigTest.MockWebServerProvider {
         @Override
@@ -25,7 +24,7 @@ public class WebServerProviderSelectionTest {
     }
 
     private WebServer create(Class<?>... providers) throws Exception {
-        java.nio.file.Path service = temporary.newFile().toPath();
+        Path service = Files.createTempFile(temporary, "provider-", ".service");
         StringBuilder content = new StringBuilder();
         for (Class<?> provider : providers) {
             content.append(provider.getName()).append('\n');

@@ -19,8 +19,8 @@ import net.hasor.web.jstl.taglib.DefineBeanTag;
 import net.hasor.web.jstl.taglib.DefineBindTag;
 import net.hasor.web.jstl.taglib.DefineTypeTag;
 import net.hasor.web.startup.RuntimeListener;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class JstlTest extends AbstractTest {
     @Test
@@ -30,9 +30,9 @@ public class JstlTest extends AbstractTest {
             apiBinder.tryCast(WebApiBinder.class).loadMappingTo(ArgsMappingAction.class);
             apiBinder.bindType(String.class).idWith("abc").toInstance("abcdefg");
         }, servletContext, LoadModule.Web);
-        PowerMockito.when(servletContext.getAttribute(RuntimeListener.AppContextName)).thenReturn(appContext);
-        PageContext pageContext = PowerMockito.mock(PageContext.class);
-        PowerMockito.when(pageContext.getServletContext()).thenReturn(appContext.getInstance(ServletContext.class));
+        Mockito.when(servletContext.getAttribute(RuntimeListener.AppContextName)).thenReturn(appContext);
+        PageContext pageContext = Mockito.mock(PageContext.class);
+        Mockito.when(pageContext.getServletContext()).thenReturn(appContext.getInstance(ServletContext.class));
         //
         DefineBeanTag tag = new DefineBeanTag();
         tag.setPageContext(pageContext);
@@ -73,9 +73,9 @@ public class JstlTest extends AbstractTest {
             apiBinder.tryCast(WebApiBinder.class).loadMappingTo(ArgsMappingAction.class);
             apiBinder.bindType(String.class).idWith("my_name_is").toInstance("abcdefg");
         }, servletContext, LoadModule.Web);
-        PowerMockito.when(servletContext.getAttribute(RuntimeListener.AppContextName)).thenReturn(appContext);
-        PageContext pageContext = PowerMockito.mock(PageContext.class);
-        PowerMockito.when(pageContext.getServletContext()).thenReturn(appContext.getInstance(ServletContext.class));
+        Mockito.when(servletContext.getAttribute(RuntimeListener.AppContextName)).thenReturn(appContext);
+        PageContext pageContext = Mockito.mock(PageContext.class);
+        Mockito.when(pageContext.getServletContext()).thenReturn(appContext.getInstance(ServletContext.class));
         //
         DefineBindTag tag = new DefineBindTag();
         tag.setPageContext(pageContext);
@@ -140,9 +140,9 @@ public class JstlTest extends AbstractTest {
             apiBinder.tryCast(WebApiBinder.class).loadMappingTo(ArgsMappingAction.class);
             apiBinder.bindType(String.class).toInstance("abcdefg");
         }, servletContext, LoadModule.Web);
-        PowerMockito.when(servletContext.getAttribute(RuntimeListener.AppContextName)).thenReturn(appContext);
-        PageContext pageContext = PowerMockito.mock(PageContext.class);
-        PowerMockito.when(pageContext.getServletContext()).thenReturn(appContext.getInstance(ServletContext.class));
+        Mockito.when(servletContext.getAttribute(RuntimeListener.AppContextName)).thenReturn(appContext);
+        PageContext pageContext = Mockito.mock(PageContext.class);
+        Mockito.when(pageContext.getServletContext()).thenReturn(appContext.getInstance(ServletContext.class));
         //
         DefineTypeTag tag = new DefineTypeTag();
         tag.setPageContext(pageContext);

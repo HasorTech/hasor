@@ -16,8 +16,8 @@ import net.hasor.core.ApiBinder;
 import net.hasor.core.Module;
 import net.hasor.web.WebApiBinder;
 import net.hasor.web.annotation.Get;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class HealthIntegrationTest extends ContainerIntegrationTest {
     private Boot builder() {

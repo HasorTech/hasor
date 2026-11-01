@@ -7,7 +7,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.demo.boot;
-
 import net.hasor.boot.Boot;
 import net.hasor.boot.BootApplication;
 import net.hasor.cobble.logging.Logger;

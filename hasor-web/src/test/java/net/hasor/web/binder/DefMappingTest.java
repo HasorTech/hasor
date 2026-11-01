@@ -22,7 +22,7 @@ import net.hasor.test.web.actions.basic.AnnoDeleteAction;
 import net.hasor.test.web.actions.basic.AnnoGetAction;
 import net.hasor.test.web.actions.basic.BasicAction;
 import net.hasor.web.AbstractTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author 赵永春 (zyc@hasor.net)

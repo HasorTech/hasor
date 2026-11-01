@@ -19,8 +19,8 @@
 //import net.hasor.test.core.basic.pojo.PojoBean;
 //import net.hasor.test.core.basic.pojo.SingletonSampleBean;
 //import net.hasor.test.core.enums.SelectEnum;
-//import org.junit.Before;
-//import org.junit.Test;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
 //import org.powermock.api.mockito.PowerMockito;
 //
 //import javax.inject.Named;
@@ -35,7 +35,7 @@
 //    private BeanContainer beanContainer = null;
 //    private AppContext    appContext    = null;
 //
-//    @Before
+//    @BeforeEach
 //    public void beforeTest() {
 //        Environment env = Hasor.create().buildEnvironment();
 //        this.beanContainer = new BeanContainer(env);

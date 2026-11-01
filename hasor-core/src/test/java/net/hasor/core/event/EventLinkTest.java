@@ -10,7 +10,7 @@ package net.hasor.core.event;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.hasor.core.EventContext;
 import net.hasor.core.EventListener;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EventLinkTest {
     @Test

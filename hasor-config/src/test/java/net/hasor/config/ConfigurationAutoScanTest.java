@@ -15,10 +15,10 @@ import net.hasor.config.autoscan.AutoScanService;
 import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
 import net.hasor.web.binder.MappingDef;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class ConfigurationAutoScanTest {
     @Test
@@ -33,11 +33,11 @@ public class ConfigurationAutoScanTest {
 
     @Test
     public void hasorShouldDiscoverWebControllerWithoutApplicationModule() {
-        ServletContext servletContext = PowerMockito.mock(ServletContext.class);
-        PowerMockito.when(servletContext.getClassLoader()).thenReturn(Thread.currentThread().getContextClassLoader());
-        PowerMockito.when(servletContext.getContextPath()).thenReturn("/");
-        PowerMockito.when(servletContext.getEffectiveMajorVersion()).thenReturn(3);
-        PowerMockito.when(servletContext.getVirtualServerName()).thenReturn("test");
+        ServletContext servletContext = Mockito.mock(ServletContext.class);
+        Mockito.when(servletContext.getClassLoader()).thenReturn(Thread.currentThread().getContextClassLoader());
+        Mockito.when(servletContext.getContextPath()).thenReturn("/");
+        Mockito.when(servletContext.getEffectiveMajorVersion()).thenReturn(3);
+        Mockito.when(servletContext.getVirtualServerName()).thenReturn("test");
 
         AppContext context = Hasor.create(servletContext).addSettings(Settings.DefaultNameSpace, "hasor.loadPackages", "net.hasor.config.autoscan").build();
 

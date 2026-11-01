@@ -6,12 +6,11 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.test.core;
-
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.hasor.core.*;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DependsOnTest {
     private static final List<String> EVENTS = new ArrayList<>();

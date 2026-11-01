@@ -22,9 +22,9 @@ import com.google.gson.JsonSerializer;
 import net.hasor.web.Invoker;
 import net.hasor.web.render.RenderEngine;
 import net.hasor.web.render.RenderInvoker;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

@@ -20,8 +20,8 @@ import net.hasor.web.annotation.Get;
 import net.hasor.web.annotation.Produces;
 import net.hasor.web.render.json.JacksonRenderEngine;
 import net.hasor.web.render.text.TextRenderEngine;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RenderContentTypeTest extends AbstractTest {
     @RenderType(engineType = JacksonRenderEngine.class)

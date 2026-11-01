@@ -17,7 +17,7 @@ import net.hasor.test.core.basic.pojo.SampleBean;
 import net.hasor.test.core.event.AppContextListener;
 import net.hasor.test.core.spi.SpiDemo;
 import net.hasor.test.core.spi.TestSpi;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SpiTest {
     @Test

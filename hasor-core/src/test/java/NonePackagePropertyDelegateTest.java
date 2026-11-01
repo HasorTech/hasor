@@ -10,7 +10,7 @@ import net.hasor.cobble.dynamic.SimpleDynamicProperty;
 import net.hasor.core.ApiBinder;
 import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @Description 没有包声明情况下的委托动态属性

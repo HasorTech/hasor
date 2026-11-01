@@ -24,9 +24,9 @@ import net.hasor.web.annotation.Any;
 import net.hasor.web.annotation.Async;
 import net.hasor.web.binder.OneConfig;
 import net.hasor.web.wrap.WebApiBinderWrap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import static net.hasor.web.render.RenderEngineTestSupport.renderEngine;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ExceptionHandlerTest extends AbstractTest {

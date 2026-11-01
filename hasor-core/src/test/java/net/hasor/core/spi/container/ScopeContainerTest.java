@@ -25,8 +25,8 @@ import net.hasor.test.core.scope.AnnoMyBean;
 import net.hasor.test.core.scope.CustomHashBean;
 import net.hasor.test.core.scope.HashRemainderScope;
 import net.hasor.test.core.scope.My;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class ScopeContainerTest {
     @Test
@@ -76,7 +76,7 @@ public class ScopeContainerTest {
         spiCallerContainer.init();
         scopeContainer.init();
         //
-        Scope mockScope = PowerMockito.mock(Scope.class);
+        Scope mockScope = Mockito.mock(Scope.class);
         scopeContainer.registerScope(My.class.getName(), mockScope);
         //
         try {
@@ -286,7 +286,7 @@ public class ScopeContainerTest {
             //
         }));
         //
-        Scope mockScope = PowerMockito.mock(Scope.class);
+        Scope mockScope = Mockito.mock(Scope.class);
         scopeContainer.registerScope(My.class.getName(), mockScope);
         //
         assert spiTest.size() == 1;

@@ -14,8 +14,8 @@ import net.hasor.config.parameter.ParameterConfiguration;
 import net.hasor.core.ApiBinder;
 import net.hasor.core.AppContext;
 import net.hasor.core.Hasor;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BeanParameterInjectionTest {
     @Test
@@ -65,8 +65,8 @@ public class BeanParameterInjectionTest {
                 context.getInstance(List.class);
                 fail("A missing named dependency must fail.");
             } catch (IllegalStateException expected) {
-                assertTrue(expected.getMessage(), expected.getMessage().contains("named 'second'"));
-                assertTrue(expected.getMessage(), expected.getMessage().contains("found 0"));
+                assertTrue(expected.getMessage().contains("named 'second'"), expected.getMessage());
+                assertTrue(expected.getMessage().contains("found 0"), expected.getMessage());
             }
         }
     }

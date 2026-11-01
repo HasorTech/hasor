@@ -27,10 +27,10 @@ import net.hasor.web.Mapping;
 import net.hasor.web.WebApiBinder;
 import net.hasor.web.binder.MappingDef;
 import net.hasor.web.binder.OneConfig;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
-import org.powermock.api.mockito.PowerMockito;
-import static org.junit.Assert.*;
+import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -48,8 +48,8 @@ public class InvokerBasicTest extends AbstractTest {
         List<MappingDef> definitions = appContext.findBindingBean(MappingDef.class);
         assertEquals(2, definitions.size());
         final Set<String> responseType = new HashSet<>();
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
-        PowerMockito.doAnswer((Answer<Void>) invocation -> {
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
+        Mockito.doAnswer((Answer<Void>) invocation -> {
             responseType.add(invocation.getArguments()[0].toString());
             return null;
         }).when(servletResponse).setContentType(anyString());
@@ -81,7 +81,7 @@ public class InvokerBasicTest extends AbstractTest {
         }, servlet25("/"), AbstractTest.LoadModule.Web, AbstractTest.LoadModule.Render);
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/abcefg.do"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
         //
         InvokerContext invokerContext = new InvokerContext();
         invokerContext.initContext(appContext, new OneConfig("", () -> appContext));
@@ -92,7 +92,7 @@ public class InvokerBasicTest extends AbstractTest {
 
     @Test
     public void asyncInvocationWorker_test_1() {
-        AsyncContext asyncContext = PowerMockito.mock(AsyncContext.class);
+        AsyncContext asyncContext = Mockito.mock(AsyncContext.class);
         final Method targetMethod = reflectMethod("asyncInvocationWorker_test_1");
         //
         AsyncInvocationWorker worker = new AsyncInvocationWorker(asyncContext, targetMethod) {
@@ -108,7 +108,7 @@ public class InvokerBasicTest extends AbstractTest {
         };
         //
         final AtomicBoolean atomicBoolean = new AtomicBoolean(false);
-        PowerMockito.doAnswer((Answer<Void>) invocationOnMock -> {
+        Mockito.doAnswer((Answer<Void>) invocationOnMock -> {
             atomicBoolean.set(true);
             return null;
         }).when(asyncContext).complete();
@@ -121,7 +121,7 @@ public class InvokerBasicTest extends AbstractTest {
 
     @Test
     public void asyncInvocationWorker_test_2() {
-        AsyncContext asyncContext = PowerMockito.mock(AsyncContext.class);
+        AsyncContext asyncContext = Mockito.mock(AsyncContext.class);
         final Method targetMethod = reflectMethod("asyncInvocationWorker_test_2");
         final Exception error = new Exception();
         //
@@ -154,7 +154,7 @@ public class InvokerBasicTest extends AbstractTest {
         }, servlet30("/"), AbstractTest.LoadModule.Web, AbstractTest.LoadModule.Render);
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/abc.do"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
         //
         Object obj = new Object();
         action.getData().set(obj);
@@ -175,7 +175,7 @@ public class InvokerBasicTest extends AbstractTest {
         }, servlet25("/"), AbstractTest.LoadModule.Web, AbstractTest.LoadModule.Render);
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/abc.do"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
         //
         Object obj = new Object();
         action.getData().set(obj);
@@ -196,7 +196,7 @@ public class InvokerBasicTest extends AbstractTest {
         }, servlet30("/"), AbstractTest.LoadModule.Web, AbstractTest.LoadModule.Render);
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/abc.do"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
         //
         Object obj = new Object();
         action.getData().set(obj);
@@ -224,7 +224,7 @@ public class InvokerBasicTest extends AbstractTest {
         }, servlet25("/"), AbstractTest.LoadModule.Web, AbstractTest.LoadModule.Render);
         //
         HttpServletRequest servletRequest = mockRequest("post", new URL("http://www.hasor.net/abc.do"));
-        HttpServletResponse servletResponse = PowerMockito.mock(HttpServletResponse.class);
+        HttpServletResponse servletResponse = Mockito.mock(HttpServletResponse.class);
         //
         Object obj = new Object();
         action.getData().set(obj);
@@ -245,10 +245,10 @@ public class InvokerBasicTest extends AbstractTest {
 
     @Test
     public void invokerSupplier_test_1() throws Throwable {
-        AppContext appContext = PowerMockito.mock(AppContext.class);
+        AppContext appContext = Mockito.mock(AppContext.class);
         HttpServletRequest httpRequest = super.mockRequest("get", new URL("http://www.hasor.net/query_param.do?byteParam=123&bigInteger=321"));
-        HttpServletResponse httpResponse = PowerMockito.mock(HttpServletResponse.class);
-        InvokerSupplier supplier = new InvokerSupplier(PowerMockito.mock(Mapping.class), appContext, httpRequest, httpResponse);
+        HttpServletResponse httpResponse = Mockito.mock(HttpServletResponse.class);
+        InvokerSupplier supplier = new InvokerSupplier(Mockito.mock(Mapping.class), appContext, httpRequest, httpResponse);
         //
         assertSame(httpRequest, supplier.getHttpRequest());
         assertSame(httpResponse, supplier.getHttpResponse());

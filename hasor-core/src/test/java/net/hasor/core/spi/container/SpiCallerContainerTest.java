@@ -16,8 +16,8 @@ import net.hasor.cobble.provider.Scope;
 import net.hasor.core.container.SpiCallerContainer;
 import net.hasor.core.spi.BindInfoProvisionListener;
 import net.hasor.core.spi.ScopeProvisionListener;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class SpiCallerContainerTest {
     //
@@ -27,10 +27,10 @@ public class SpiCallerContainerTest {
         assert spiCallerContainer.getListenerTypeSize() == 0;
         assert spiCallerContainer.getListenerSize() == 0;
         //
-        BindInfoProvisionListener listener1 = PowerMockito.mock(BindInfoProvisionListener.class);
+        BindInfoProvisionListener listener1 = Mockito.mock(BindInfoProvisionListener.class);
         spiCallerContainer.addListener(BindInfoProvisionListener.class, Provider.of(listener1));
         spiCallerContainer.addListener(BindInfoProvisionListener.class, Provider.of(listener1));
-        ScopeProvisionListener listener2 = PowerMockito.mock(ScopeProvisionListener.class);
+        ScopeProvisionListener listener2 = Mockito.mock(ScopeProvisionListener.class);
         spiCallerContainer.addListener(ScopeProvisionListener.class, Provider.of(listener2));
         spiCallerContainer.addListener(ScopeProvisionListener.class, Provider.of(listener2));
         spiCallerContainer.addListener(ScopeProvisionListener.class, Provider.of(listener2));
@@ -66,7 +66,7 @@ public class SpiCallerContainerTest {
         //
         assert receive.size() == 0;
         //
-        Supplier<? extends Scope> mockScope = PowerMockito.mock(Supplier.class);
+        Supplier<? extends Scope> mockScope = Mockito.mock(Supplier.class);
         spiCallerContainer.notifySpiWithoutResult(ScopeProvisionListener.class, listener -> {
             listener.newScope("xxxx", mockScope);
         });

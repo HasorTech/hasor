@@ -12,7 +12,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletConfig;
 import net.hasor.web.AbstractTest;
 import net.hasor.web.InvokerConfig;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author 赵永春 (zyc@hasor.net)

@@ -13,25 +13,22 @@
 //import net.hasor.test.core.basic.destroy.SingletonPublicCallDestroyBean;
 //import net.hasor.test.core.basic.init.PrototypePublicCallInitBean;
 //import net.hasor.test.core.basic.init.StaticPublicCallInitBean;
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
 //import org.powermock.api.mockito.PowerMockito;
 //import org.powermock.core.classloader.annotations.PrepareForTest;
-//import org.powermock.modules.junit4.PowerMockRunner;
 //
 //import javax.inject.Singleton;
 //import java.util.ArrayList;
 //
 //import static org.mockito.ArgumentMatchers.any;
 //
-//@RunWith(PowerMockRunner.class)
 //@PrepareForTest({ HasorUtils.class })
 //public class LifeBeanContainerTest {
 //    private BeanContainer beanContainer = null;
 //    private AppContext    appContext    = null;
 //
-//    @Before
+//    @BeforeEach
 //    public void beforeTest() {
 //        Environment env = Hasor.create().buildEnvironment();
 //        this.beanContainer = new BeanContainer(env);

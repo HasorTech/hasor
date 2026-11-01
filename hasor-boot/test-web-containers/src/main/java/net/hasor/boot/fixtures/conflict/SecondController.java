@@ -6,7 +6,6 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.boot.fixtures.conflict;
-
 import net.hasor.web.annotation.Get;
 import net.hasor.web.annotation.MappingTo;
 

@@ -10,8 +10,8 @@ package net.hasor.web.binder;
 import java.time.Duration;
 import net.hasor.cobble.loader.ResourceLoader;
 import net.hasor.web.CacheControl;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ResourceBinderTest {
@@ -47,30 +47,30 @@ public class ResourceBinderTest {
         assertNull(binder.build().cacheControl());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void nullPolicyMustBeExplicitlyReplacedWithEmpty() {
-        new InnerResourceBinder("/assets/**", mock(ResourceLoader.class)).cacheControl(null);
+        assertThrows(IllegalArgumentException.class, () -> new InnerResourceBinder("/assets/**", mock(ResourceLoader.class)).cacheControl(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void customPolicyCannotInjectResponseHeaders() {
         CacheControl policy = mock(CacheControl.class);
         when(policy.getHeaderValue()).thenReturn("no-cache\r\nX-Injected: value");
-        new InnerResourceBinder("/assets/**", mock(ResourceLoader.class)).cacheControl(policy);
+        assertThrows(IllegalArgumentException.class, () -> new InnerResourceBinder("/assets/**", mock(ResourceLoader.class)).cacheControl(policy));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void requiresLoaders() {
-        new InnerResourceBinder("/**");
+        assertThrows(IllegalArgumentException.class, () -> new InnerResourceBinder("/**"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void rejectsNullArray() {
-        new InnerResourceBinder("/**", (ResourceLoader[]) null);
+        assertThrows(IllegalArgumentException.class, () -> new InnerResourceBinder("/**", (ResourceLoader[]) null));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void rejectsNullLoader() {
-        new InnerResourceBinder("/**", (ResourceLoader) null);
+        assertThrows(NullPointerException.class, () -> new InnerResourceBinder("/**", (ResourceLoader) null));
     }
 }

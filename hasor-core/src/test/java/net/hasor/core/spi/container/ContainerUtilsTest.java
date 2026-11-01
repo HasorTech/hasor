@@ -37,8 +37,8 @@ import net.hasor.test.core.basic.inject.jsr330.ByOrder;
 import net.hasor.test.core.basic.inject.jsr330.Jsr330BasicRef;
 import net.hasor.test.core.basic.inject.jsr330.Jsr330ConstructorRef;
 import net.hasor.test.core.basic.inject.property.PropertyBean;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ContainerUtilsTest {
     private Method initMethod_1    = null;
@@ -48,7 +48,7 @@ public class ContainerUtilsTest {
     private Method destroyMethod_2 = null;
     private Method destroyMethod_3 = null;
 
-    @Before
+    @BeforeEach
     public void testBefore() {
         try {
             initMethod_1 = NonePrivateCallInitBean.class.getDeclaredMethod("init");

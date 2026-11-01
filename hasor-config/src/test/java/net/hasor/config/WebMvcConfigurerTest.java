@@ -19,11 +19,11 @@ import net.hasor.web.HandlerInterceptor;
 import net.hasor.web.binder.FilterDef;
 import net.hasor.web.binder.RenderDef;
 import net.hasor.web.render.json.JsonRenderEngine;
-import org.junit.Test;
-import org.powermock.api.mockito.PowerMockito;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WebMvcConfigurerTest {
     @Test
@@ -33,11 +33,11 @@ public class WebMvcConfigurerTest {
         WebMvcConfiguration.JSON_CONFIGURES.set(0);
         WebMvcConfiguration.INTERCEPTOR_CONFIGURES.set(0);
 
-        ServletContext servletContext = PowerMockito.mock(ServletContext.class);
-        PowerMockito.when(servletContext.getClassLoader()).thenReturn(Thread.currentThread().getContextClassLoader());
-        PowerMockito.when(servletContext.getContextPath()).thenReturn("/");
-        PowerMockito.when(servletContext.getEffectiveMajorVersion()).thenReturn(3);
-        PowerMockito.when(servletContext.getVirtualServerName()).thenReturn("test");
+        ServletContext servletContext = Mockito.mock(ServletContext.class);
+        Mockito.when(servletContext.getClassLoader()).thenReturn(Thread.currentThread().getContextClassLoader());
+        Mockito.when(servletContext.getContextPath()).thenReturn("/");
+        Mockito.when(servletContext.getEffectiveMajorVersion()).thenReturn(3);
+        Mockito.when(servletContext.getVirtualServerName()).thenReturn("test");
 
         AppContext context = Hasor.create(servletContext)//
                 .addSettings(Settings.DefaultNameSpace, "hasor.loadPackages", "net.hasor.config.webconfig")//

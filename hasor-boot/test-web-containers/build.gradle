@@ -6,5 +6,6 @@ description = 'Web 容器共享集成测试，不参与发布。'
 
 dependencies {
     api project(':hasor-boot-web')
-    api "junit:junit:${property('lib.junit')}"
+    api platform("org.junit:junit-bom:${property('lib.junit')}")
+    api 'org.junit.jupiter:junit-jupiter-api'
 }

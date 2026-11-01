@@ -16,7 +16,7 @@ import net.hasor.core.BindInfo;
 import net.hasor.core.Hasor;
 import net.hasor.core.spi.CollectScopeChainSpi;
 import net.hasor.test.core.basic.pojo.PojoBean;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DefaultSingletonTest {
     @Test
