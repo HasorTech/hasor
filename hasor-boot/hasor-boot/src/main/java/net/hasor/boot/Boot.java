@@ -45,8 +45,10 @@ public final class Boot {
 
     public BootApplication start() throws Exception {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        if (loader == null)
+        if (loader == null) {
             loader = Boot.class.getClassLoader();
+        }
+
         BootConfiguration configuration = new BootConfiguration(arguments, sources, hconfigFile, loader, properties);
         BootLauncher launcher = (environment, modules) -> {
             Hasor hasor = configuration.newHasor(environment);
@@ -54,12 +56,14 @@ public final class Boot {
             configuration.configureSources(hasor);
             return new BootApplication(hasor.build());
         };
+
         List<BootExtension> extensions = new ArrayList<>();
         ServiceLoader.load(BootExtension.class, loader).forEach(extensions::add);
         extensions.sort(Comparator.comparingInt(BootExtension::order).thenComparing(e -> e.getClass().getName()));
         for (int i = extensions.size() - 1; i >= 0; i--) {
             launcher = Objects.requireNonNull(extensions.get(i).configure(configuration, launcher), "launcher");
         }
+
         BootApplication application = launcher.start(null, List.of());
         try {
             AutoCloseable hook = SystemUtils.registerShutdownHook(() -> {
