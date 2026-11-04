@@ -145,7 +145,7 @@ public final class Hasor {
 
     private static void loadPluginSettings(DefaultSettings configSetting) throws IOException {
         // 装载所有 xxx-hconfig.xml
-        Map<String, URL> toLoading = new HashMap<>();
+        Map<String, URL> toLoading = new LinkedHashMap<>();
         List<URL> schemaUrlList = ResourcesUtils.getResources(SchemaName);
         for (URL schemaUrl : schemaUrlList) {
             InputStream schemaStream = ResourcesUtils.getResourceAsStream(schemaUrl);
@@ -159,7 +159,10 @@ public final class Hasor {
             }
         }
 
-        for (Map.Entry<String, URL> entry : toLoading.entrySet()) {
+        // 框架内置值先加载，应用 schemas 随后加载并覆盖同名默认值。
+        List<Map.Entry<String, URL>> resources = new ArrayList<>(toLoading.entrySet());
+        resources.sort(Comparator.comparing(entry -> !entry.getKey().startsWith("/META-INF/hasor-framework/")));
+        for (Map.Entry<String, URL> entry : resources) {
             String resource = entry.getKey();
             URL schemaUrl = entry.getValue();
             if (loadSettings(configSetting, resource)) {

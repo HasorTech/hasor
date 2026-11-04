@@ -24,7 +24,9 @@ public class BootTest {
 
     @Test
     public void runsWithoutWebAndProcessesExplicitConfiguration() throws Exception {
-        try (BootApplication application = new Boot().sources(Source.class).property("hasor.loadPackages", "example.empty").start()) {
+        Boot boot = new Boot().sources(Source.class)//
+                .property("hasor.loadPackages", "example.empty");
+        try (BootApplication application = boot.start()) {
             assertEquals("boot", application.getAppContext().getInstance(String.class));
             assertTrue(application.getAppContext().isStart());
             try {
@@ -38,7 +40,8 @@ public class BootTest {
 
     @Test
     public void closesResourcesInReverseOrderEvenWhenOneFails() throws Exception {
-        BootApplication application = new Boot().property("hasor.loadPackages", "example.empty").start();
+        Boot boot = new Boot().property("hasor.loadPackages", "example.empty");
+        BootApplication application = boot.start();
         StringBuilder order = new StringBuilder();
         application.onClose(() -> order.append("first"));
         application.onClose(() -> {
@@ -59,7 +62,8 @@ public class BootTest {
     @Test
     public void extensionsComposeByOrder() throws Exception {
         FirstTestExtension.events.clear();
-        try (BootApplication application = new Boot().property("hasor.loadPackages", "example.empty").start()) {
+        Boot boot = new Boot().property("hasor.loadPackages", "example.empty");
+        try (BootApplication application = boot.start()) {
             assertEquals(java.util.List.of("first-start", "second-start"), FirstTestExtension.events);
         }
         assertEquals(java.util.List.of("first-start", "second-start", "first-stop", "second-stop"), FirstTestExtension.events);
@@ -69,7 +73,10 @@ public class BootTest {
     public void moduleLifecycleIsInvokedOnce() throws Exception {
         Lifecycle.starts.set(0);
         Lifecycle.stops.set(0);
-        BootApplication application = new Boot().sources(Lifecycle.class).arguments("hello").property("hasor.loadPackages", "example.empty").start();
+        Boot boot = new Boot().sources(Lifecycle.class)//
+                .arguments("hello")//
+                .property("hasor.loadPackages", "example.empty");
+        BootApplication application = boot.start();
         assertEquals(1, Lifecycle.starts.get());
         assertArrayEquals(new String[] { "hello" }, application.getAppContext().getInstance(net.hasor.core.info.Arguments.class).args());
         application.close();

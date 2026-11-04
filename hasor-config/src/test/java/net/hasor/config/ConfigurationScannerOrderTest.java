@@ -26,7 +26,7 @@ public class ConfigurationScannerOrderTest {
         when(binder.getResourceLoader()).thenReturn(resources);
         ConfigurationModule.auto().loadModule(binder);
 
-        verify(resources, times(1)).scanResources(eq(net.hasor.cobble.loader.MatchType.Prefix), any(net.hasor.cobble.loader.Scanner.class), aryEq(new String[] { "example/app", "example/extra" }));
+        verify(resources, times(1)).scanResources(eq(net.hasor.cobble.loader.MatchType.Prefix), any(net.hasor.cobble.loader.Scanner.class), aryEq(new String[] { "example/app/", "example/extra/" }));
     }
 
     @Test

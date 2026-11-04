@@ -47,31 +47,36 @@ public abstract class HealthIntegrationTest extends ContainerIntegrationTest {
 
     @Test
     public void defaultHealthIsUp() throws Exception {
-        try (BootApplication app = builder().start()) {
-            assertEquals("{\"status\":\"UP\"}", request(app, "/health", 200));
+        Boot boot = builder();
+        try (BootApplication application = boot.start()) {
+            assertEquals("{\"status\":\"UP\"}", request(application, "/health", 200));
         }
     }
 
     @Test
     public void customAddressReplacesDefault() throws Exception {
-        try (BootApplication app = builder().property("hasor.boot.web.health.path", "/internal/alive").start()) {
-            request(app, "/health", 404);
-            assertTrue(request(app, "/internal/alive", 200).contains("UP"));
+        Boot boot = builder().property("hasor.boot.web.health.path", "/internal/alive");
+        try (BootApplication application = boot.start()) {
+            request(application, "/health", 404);
+            assertTrue(request(application, "/internal/alive", 200).contains("UP"));
         }
     }
 
     @Test
     public void endpointCanBeDisabled() throws Exception {
-        try (BootApplication app = builder().property("hasor.boot.web.health.enabled", false).property("hasor.boot.web.health.path", "/internal/alive").start()) {
-            request(app, "/health", 404);
-            request(app, "/internal/alive", 404);
+        Boot boot = builder().property("hasor.boot.web.health.enabled", false)//
+                .property("hasor.boot.web.health.path", "/internal/alive");
+        try (BootApplication application = boot.start()) {
+            request(application, "/health", 404);
+            request(application, "/internal/alive", 404);
         }
     }
 
     @Test
     public void customChecksAreAggregated() throws Exception {
-        try (BootApplication app = builder().sources(Checks.class).start()) {
-            String body = request(app, "/health", 503);
+        Boot boot = builder().sources(Checks.class);
+        try (BootApplication application = boot.start()) {
+            String body = request(application, "/health", 503);
             assertTrue(body.contains("\"database\":\"DOWN\""));
             assertTrue(body.contains("\"cache\":\"UP\""));
         }
@@ -79,8 +84,10 @@ public abstract class HealthIntegrationTest extends ContainerIntegrationTest {
 
     @Test
     public void checkExceptionsDoNotLeakDetails() throws Exception {
-        try (BootApplication app = builder().sources(Checks.class).property("test.health.throw", true).start()) {
-            String body = request(app, "/health", 503);
+        Boot boot = builder().sources(Checks.class)//
+                .property("test.health.throw", true);
+        try (BootApplication application = boot.start()) {
+            String body = request(application, "/health", 503);
             assertTrue(body.contains("\"database\":\"DOWN\""));
             assertFalse(body.contains("secret"));
         }
@@ -101,8 +108,9 @@ public abstract class HealthIntegrationTest extends ContainerIntegrationTest {
 
     @Test
     public void existingBusinessEndpointWins() throws Exception {
-        try (BootApplication app = builder().sources(ExistingApplication.class).start()) {
-            WebServer server = app.getAppContext().getInstance(WebServer.class);
+        Boot boot = builder().sources(ExistingApplication.class);
+        try (BootApplication application = boot.start()) {
+            WebServer server = application.getAppContext().getInstance(WebServer.class);
             HttpURLConnection connection = (HttpURLConnection) new URL("http://127.0.0.1:" + server.getPort() + "/health").openConnection();
             connection.setConnectTimeout(3000);
             connection.setReadTimeout(3000);
@@ -132,8 +140,9 @@ public abstract class HealthIntegrationTest extends ContainerIntegrationTest {
 
     @Test
     public void beanNamesIdentifyChecks() throws Exception {
-        try (BootApplication app = builder().sources(BeanChecks.class).start()) {
-            String body = request(app, "/health", 503);
+        Boot boot = builder().sources(BeanChecks.class);
+        try (BootApplication application = boot.start()) {
+            String body = request(application, "/health", 503);
             assertTrue(body.contains("\"database\":\"UP\""));
             assertTrue(body.contains("\"queue\":\"DOWN\""));
             assertFalse(body.contains("messageQueue"));

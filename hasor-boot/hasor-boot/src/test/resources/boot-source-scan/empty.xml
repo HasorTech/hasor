@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.hasor.net/sechma/main">
+    <hasor.loadPackages>${BOOT_EMPTY_SCAN_RANGE:}</hasor.loadPackages>
+</config>

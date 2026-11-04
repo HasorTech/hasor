@@ -7,11 +7,13 @@
  */
 package net.hasor.boot.web;
 import java.net.HttpURLConnection;
+import java.net.ServerSocket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import net.hasor.boot.Boot;
 import net.hasor.boot.BootApplication;
 import net.hasor.boot.fixtures.defaults.DefaultApplication;
+import net.hasor.boot.fixtures.sources.SourceApplication;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,10 +32,32 @@ public abstract class UnifiedBootIntegrationTest extends ContainerIntegrationTes
     }
 
     @Test
+    public void sourcePackageIncludesControllersInSubpackages() throws Exception {
+        Boot boot = new Boot().sources(SourceApplication.class)//
+                .property("hasor.boot.web.connectors.http.host", "127.0.0.1")//
+                .property("hasor.boot.web.connectors.http.port", 0);
+        try (BootApplication application = boot.start()) {
+            WebServer server = application.getAppContext().getInstance(WebServer.class);
+            HttpURLConnection connection = (HttpURLConnection) new URL("http://127.0.0.1:" + server.getPort() + "/source-package").openConnection();
+            connection.setConnectTimeout(3000);
+            connection.setReadTimeout(3000);
+            try {
+                assertEquals(200, connection.getResponseCode());
+                assertEquals("source-package", new String(connection.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
+            } finally {
+                connection.disconnect();
+            }
+        }
+    }
+
+    @Test
     public void failedApplicationStopsWebServer() throws Exception {
         FailingApplication.captured = null;
+        Boot boot = new Boot().sources(FailingApplication.class)//
+                .property("hasor.boot.web.connectors.http.port", 0)//
+                .property("hasor.loadPackages", "example.empty");
         try {
-            new Boot().sources(FailingApplication.class).property("hasor.boot.web.connectors.http.port", 0).property("hasor.loadPackages", "example.empty").start();
+            boot.start();
             fail("Startup must fail.");
         } catch (Exception expected) {
             assertNotNull(FailingApplication.captured);
@@ -43,25 +67,28 @@ public abstract class UnifiedBootIntegrationTest extends ContainerIntegrationTes
 
     @Test
     public void disabledHttpDoesNotBindConfiguredPort() throws Exception {
-        try (java.net.ServerSocket occupied = new java.net.ServerSocket(0);
-                BootApplication application = new Boot()
-                        .property("hasor.boot.web.connectors.http.enabled", false)
-                        .property("hasor.boot.web.connectors.http.port", occupied.getLocalPort())
-                        .property("hasor.loadPackages", "example.empty").start()) {
-            WebServer server = application.getAppContext().getInstance(WebServer.class);
-            assertTrue(application.getAppContext().isStart());
-            assertTrue(server.isStart());
-            assertEquals(-1, server.getPort());
+        try (ServerSocket occupied = new ServerSocket(0);) {
+            Boot boot = new Boot()//
+                    .property("hasor.boot.web.connectors.http.enabled", false)//
+                    .property("hasor.boot.web.connectors.http.port", occupied.getLocalPort())//
+                    .property("hasor.loadPackages", "example.empty");
+
+            try (BootApplication application = boot.start()) {
+                WebServer server = application.getAppContext().getInstance(WebServer.class);
+                assertTrue(application.getAppContext().isStart());
+                assertTrue(server.isStart());
+                assertEquals(-1, server.getPort());
+            }
         }
     }
 
     @Test
     public void customServerContextPathIsUsed() throws Exception {
-        try (BootApplication application = new Boot()
-                .property("hasor.boot.web.server.contextPath", "/console")
-                .property("hasor.boot.web.connectors.http.host", "127.0.0.1")
-                .property("hasor.boot.web.connectors.http.port", 0)
-                .property("hasor.loadPackages", "example.empty").start()) {
+        Boot boot = new Boot().property("hasor.boot.web.server.contextPath", "/console")//
+                .property("hasor.boot.web.connectors.http.host", "127.0.0.1")//
+                .property("hasor.boot.web.connectors.http.port", 0)//
+                .property("hasor.loadPackages", "example.empty");
+        try (BootApplication application = boot.start()) {
             WebServer server = application.getAppContext().getInstance(WebServer.class);
             assertEquals("/console", server.getContextPath());
             HttpURLConnection connection = (HttpURLConnection) new URL("http://127.0.0.1:" + server.getPort() + "/console/health").openConnection();
@@ -78,7 +105,10 @@ public abstract class UnifiedBootIntegrationTest extends ContainerIntegrationTes
     @Test
     public void unifiedEntryStartsWebAndClosesIt() throws Exception {
         WebServer server;
-        BootApplication application = new Boot().sources(DefaultApplication.class).property("hasor.boot.web.connectors.http.port", 0).property("hasor.loadPackages", "net.hasor.boot.fixtures.defaults").start();
+        Boot boot = new Boot().sources(DefaultApplication.class)//
+                .property("hasor.boot.web.connectors.http.port", 0)//
+                .property("hasor.loadPackages", "net.hasor.boot.fixtures.defaults");
+        BootApplication application = boot.start();
         try {
             server = application.getAppContext().getInstance(WebServer.class);
             assertTrue(server.isStart());
@@ -94,6 +124,7 @@ public abstract class UnifiedBootIntegrationTest extends ContainerIntegrationTes
         } finally {
             application.close();
         }
+
         assertFalse(server.isStart());
         assertFalse(application.getAppContext().isStart());
     }

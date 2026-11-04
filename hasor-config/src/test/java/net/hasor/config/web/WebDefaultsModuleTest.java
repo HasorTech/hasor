@@ -96,7 +96,7 @@ public class WebDefaultsModuleTest {
         org.mockito.Mockito.when(binder.getResourceLoader()).thenReturn(resources);
         net.hasor.config.ConfigurationModule.auto().loadModule(binder);
         new WebDefaultsModule(new WebOptions().staticResources(false)).loadModule(binder);
-        org.mockito.Mockito.verify(resources).scanResources(org.mockito.Mockito.eq(net.hasor.cobble.loader.MatchType.Prefix), org.mockito.Mockito.any(net.hasor.cobble.loader.Scanner.class), org.mockito.AdditionalMatchers.aryEq(new String[] { "example/core/*", "example/other/*" }));
+        org.mockito.Mockito.verify(resources).scanResources(org.mockito.Mockito.eq(net.hasor.cobble.loader.MatchType.Prefix), org.mockito.Mockito.any(net.hasor.cobble.loader.Scanner.class), org.mockito.AdditionalMatchers.aryEq(new String[] { "example/core/*/", "example/other/*/" }));
     }
 
     @org.junit.jupiter.api.Test

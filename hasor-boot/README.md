@@ -7,7 +7,7 @@ Hasor Boot 为 Hasor 应用提供统一启动入口、扩展生命周期和可�
 - **独立运行**：应用及依赖打包为可执行 JAR，也支持直接运行 Java 启动类。
 - **统一启动**：通过 `Boot.run(...)` 启动应用，Java SPI 扩展可在容器创建前准备运行环境。
 - **容器选择**：支持 Tomcat、Jetty、Undertow，使用相同的启动 API 和公共 HTTP 配置。
-- **默认装配**：统一使用 Core 的 `hasor.loadPackages` 作为扫描范围，兼容已有的 `Module`、`WebModule`。
+- **默认装配**：默认扫描启动源所在包及其子包，也可通过 `hasor.loadPackages` 指定范围，兼容已有的 `Module`、`WebModule`。
 - **前端托管**：默认加载类路径下的静态资源，支持欢迎页及显式配置的单页应用路由回退。
 - **构建集成**：提供 Gradle `bootJar` 任务和 Maven `repackage` 目标，保留依赖 JAR，不要求将依赖类合并展开。
 
@@ -107,18 +107,9 @@ public class HelloAction {
 }
 ```
 
-启动类无需实现框架接口。按 `hasor.loadPackages` 扫描 `@MappingTo` 类型，不会根据启动类位置推导扫描范围。请在下述配置文件中明确限定业务包。启动类若实现 `Module` 或 `WebModule`，仍会作为应用模块装载。
+启动类无需实现框架接口。默认扫描 `Application` 所在的 `example` 包及其子包，因此 `HelloAction` 会自动装配。启动类若实现 `Module` 或 `WebModule`，仍会作为应用模块装载。
 
-### 3. 配置扫描范围并运行
-
-先创建 `src/main/resources/hconfig.xml`：
-
-```xml
-<config xmlns="https://www.hasor.net/sechma/main">
-    <hasor.loadPackages>example.*</hasor.loadPackages>
-</config>
-```
-
+### 3. 打包并运行
 
 ```bash
 ./gradlew bootJar
@@ -138,7 +129,7 @@ java -jar build/libs/demo-1.0.0-boot.jar
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="https://www.hasor.net/sechma/main">
-    <hasor.loadPackages>example.*</hasor.loadPackages>
+    <hasor.loadPackages>example</hasor.loadPackages>
     <hasor.boot.web>
         <server>
             <contextPath>/</contextPath>
@@ -178,7 +169,7 @@ java -jar build/libs/demo-1.0.0-boot.jar
 
 原 `hasor.http.*` 配置需迁移到上述结构；容器选择配置已删除，上下文路径的环境变量改为 `HASOR_WEB_CONTEXT_PATH`，HTTP 的 host、port 环境变量保持不变。
 
-Config、Web、Boot 不再读取专用 `scanPackages` 或 `autoScan` 配置，也不提供对应的设置接口。自动扫描默认执行，范围仅由 Core 的 `hasor.loadPackages`（环境变量 `HASOR_LOAD_PACKAGES`）管理。
+未指定扫描范围时，Boot 根据 `sources(...)` 的各个启动源所在包推导范围，多个包去重后取并集，包含各自子包。显式配置 `hasor.loadPackages` 或环境变量 `HASOR_LOAD_PACKAGES` 时，以配置范围为准；将 `hasor.loadPackages` 设为空串可禁止扫描。Config、Web、Boot 不再读取专用 `scanPackages` 或 `autoScan` 配置。
 
 Web 装配选项使用 `hasor.config.web.*`，主要包括 `scanExcludes`、`staticResources`、`staticLocation`、`spaPaths`、`resourceExcludes` 和 `response.noStorePaths`。数组项通过重复 XML 元素配置。
 

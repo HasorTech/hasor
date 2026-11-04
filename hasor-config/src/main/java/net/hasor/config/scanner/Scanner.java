@@ -35,7 +35,7 @@ public final class Scanner {
         Map<String, Set<String>> discovered = new HashMap<>();
         ResourceLoader resources = binder.getResourceLoader();
         ClassLoader loader = resources.toClassLoader(binder.getClassLoader());
-        String[] paths = Arrays.stream(packages).map(n -> n.replace('.', '/')).toArray(String[]::new);
+        String[] paths = Arrays.stream(packages).map(n -> n.replace('.', '/') + "/").toArray(String[]::new);
         List<Class<?>> types = resources.<Class<?>>scanResources(MatchType.Prefix, event -> {
             if (!event.getName().endsWith(".class")) {
                 return null;
