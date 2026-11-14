@@ -329,6 +329,13 @@ public interface ApiBinder {
         return this.bindType(type).nameWith(withName).toProvider(supplier);
     }
 
+    /**
+     * Registers one resolver per annotation type for field injection, before Bean initialization.
+     * No additional {@link Inject} is required. Duplicate registrations and multiple injection
+     * annotations on one field are rejected. Existing explicit property override rules still apply.
+     */
+    <A extends Annotation> void bindAnnotationInjector(Class<A> annotationType, AnnotationInjector<A> injector);
+
     /** 添加SPI监听器 */
     default <T extends EventListener> void bindSpiListener(Class<T> spiType, T listener) {
         this.bindSpiListener(spiType, (Supplier<T>) () -> listener);

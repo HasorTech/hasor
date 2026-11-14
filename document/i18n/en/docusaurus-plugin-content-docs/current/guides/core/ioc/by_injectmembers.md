@@ -24,3 +24,5 @@ public class OrderManager implements InjectMembers {
     }
 }
 ```
+
+To customize injection for individual fields, use [custom annotation injection](./by_annotation.md) instead of taking over all member injection.

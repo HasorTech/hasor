@@ -24,3 +24,5 @@ public class OrderManager implements InjectMembers {
     }
 }
 ```
+
+如只需要扩展某个字段的注入方式，使用[自定义注解注入](./by_annotation.md)，无需接管整个对象的成员注入。

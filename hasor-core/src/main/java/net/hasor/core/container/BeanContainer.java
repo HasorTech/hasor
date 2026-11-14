@@ -45,6 +45,7 @@ import static net.hasor.core.container.InnerUtils.*;
  * @version : 2015-11-25
  */
 public class BeanContainer extends AbstractContainer implements BindInfoBuilderFactory {
+    private final Map<Class<? extends Annotation>, AnnotationInjector<?>> annotationInjectors = new ConcurrentHashMap<>();
     private final        Map<String, Supplier<?>>         dependentProviders = new ConcurrentHashMap<>();
     private static final ThreadLocal<Deque<CreationNode>> CREATION_PATH      = ThreadLocal.withInitial(ArrayDeque::new);
     private final        Settings                         settings;
@@ -71,6 +72,32 @@ public class BeanContainer extends AbstractContainer implements BindInfoBuilderF
         this.eventContext = new StandardEventManager(eventThreadPoolSize, "Hasor", Thread.currentThread().getContextClassLoader());
         this.context = context;
         this.classEngineMap = new ConcurrentHashMap<>();
+    }
+
+    public <A extends Annotation> void bindAnnotationInjector(Class<A> annotationType, AnnotationInjector<A> injector) {
+        Objects.requireNonNull(annotationType, "annotationType");
+        Objects.requireNonNull(injector, "injector");
+        if (!annotationType.isAnnotation()) {
+            throw new IllegalArgumentException("Not an annotation: " + annotationType.getName());
+        }
+        if (this.annotationInjectors.putIfAbsent(annotationType, injector) != null) {
+            throw new IllegalStateException("Annotation injector already registered: " + annotationType.getName());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <A extends Annotation> Object resolveAnnotation(AppContext appContext, Field field, A annotation) {
+        AnnotationInjector<A> injector = (AnnotationInjector<A>) this.annotationInjectors.get(annotation.annotationType());
+        try {
+            Object value = injector.resolve(appContext, field, annotation);
+            Class<?> type = ClassUtils.primitiveToWrapper(field.getType());
+            if ((value == null && field.getType().isPrimitive()) || (value != null && !type.isInstance(value))) {
+                throw new IllegalStateException("Incompatible annotation injection value for " + field);
+            }
+            return value;
+        } catch (Throwable e) {
+            throw new IllegalStateException("Cannot inject " + field + " using @" + annotation.annotationType().getName(), e);
+        }
     }
 
     @Override
@@ -582,11 +609,26 @@ public class BeanContainer extends AbstractContainer implements BindInfoBuilderF
         List<Field> fieldList = BeanUtils.getALLFieldToList(targetType);
         fieldList = fieldList == null ? new ArrayList<>(0) : fieldList;
         for (Field field : fieldList) {
+            Annotation custom = null;
+            for (Annotation annotation : field.getAnnotations()) {
+                if (this.annotationInjectors.containsKey(annotation.annotationType())) {
+                    if (custom != null) {
+                        throw new IllegalStateException("Multiple annotation injectors for " + field);
+                    }
+                    custom = annotation;
+                }
+            }
+            if (custom != null && (Modifier.isFinal(field.getModifiers()) || Modifier.isStatic(field.getModifiers()))) {
+                throw new IllegalStateException("Annotation injection requires a mutable instance field: " + field);
+            }
             if (Modifier.isFinal(field.getModifiers())) {
                 continue;
             }
             Annotation injectInfo = findInject(false, field.getAnnotations());
-            if (injectInfo == null) {
+            if (custom != null && injectInfo != null) {
+                throw new IllegalStateException("Multiple injection sources for " + field);
+            }
+            if (injectInfo == null && custom == null) {
                 continue;
             }
             //
@@ -602,7 +644,9 @@ public class BeanContainer extends AbstractContainer implements BindInfoBuilderF
             if (!field.isAccessible()) {
                 field.setAccessible(true);
             }
-            invokeField(field, targetBean, providerOnlyAnnotation(field.getName(), field.getType(), injectInfo, appContext).get());
+            Object value = custom == null ? providerOnlyAnnotation(field.getName(), field.getType(), injectInfo, appContext).get()
+                    : resolveAnnotation(appContext, field, custom);
+            invokeField(field, targetBean, value);
             injectFileds.add(field.getName());
         }
         // c.方法注入

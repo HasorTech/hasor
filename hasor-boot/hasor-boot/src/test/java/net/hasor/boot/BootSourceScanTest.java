@@ -8,6 +8,7 @@
 package net.hasor.boot;
 import java.net.URLClassLoader;
 import java.util.Objects;
+import net.hasor.boot.scan.beans.BeanSource;
 import net.hasor.boot.scan.first.FirstSource;
 import net.hasor.boot.scan.second.SecondSource;
 import net.hasor.cobble.StringUtils;
@@ -22,6 +23,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ResourceLock(Resources.SYSTEM_PROPERTIES)
 public class BootSourceScanTest {
+    @Test
+    public void sourcePackageRegistersBeanClassesAndInjectsDependencies() throws Exception {
+        Boot boot = new Boot().sources(BeanSource.class);
+        try (BootApplication application = boot.start()) {
+            AppContext context = application.getAppContext();
+            BeanSource.Service service = context.getInstance(BeanSource.Service.class);
+            assertEquals("scanned", service.message());
+            assertSame(service, context.getInstance("service"));
+        }
+    }
+
     @Test
     public void sourcePackageIncludesChildConfigurations() throws Exception {
         Boot boot = new Boot().sources(FirstSource.class);

@@ -7,6 +7,7 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.core.binder;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -39,6 +40,11 @@ public abstract class BasicBinder implements ApiBinder {
 
     public BasicBinder(BeanContainer context) {
         this.context = context;
+    }
+
+    @Override
+    public <A extends Annotation> void bindAnnotationInjector(Class<A> annotationType, AnnotationInjector<A> injector) {
+        this.context.bindAnnotationInjector(annotationType, injector);
     }
 
     @Override

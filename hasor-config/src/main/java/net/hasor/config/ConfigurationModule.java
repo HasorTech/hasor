@@ -9,6 +9,7 @@
 package net.hasor.config;
 import java.util.*;
 
+import net.hasor.config.scanner.BeanTypeProcessor;
 import net.hasor.config.scanner.ConfigurationProcessor;
 import net.hasor.config.scanner.MappingProcessor;
 import net.hasor.config.scanner.Scanner;
@@ -16,7 +17,7 @@ import net.hasor.core.ApiBinder;
 import net.hasor.core.Module;
 import net.hasor.web.WebApiBinder;
 
-/** 统一组织配置类和 Web 路由的扫描装配。 */
+/** 统一组织配置类、业务 Bean 和 Web 路由的扫描装配。 */
 public class ConfigurationModule implements Module {
     private static final ConfigurationProcessor CONFIGURATION_PROCESSOR = new ConfigurationProcessor();
     private static final Scanner                SCANNER                 = createScanner();
@@ -26,10 +27,10 @@ public class ConfigurationModule implements Module {
         try {
             Class<?> webType = WebApiBinder.class;
         } catch (NoClassDefFoundError ignored) {
-            return new Scanner(CONFIGURATION_PROCESSOR);
+            return new Scanner(CONFIGURATION_PROCESSOR, new BeanTypeProcessor());
         }
 
-        return new Scanner(CONFIGURATION_PROCESSOR, new MappingProcessor());
+        return new Scanner(CONFIGURATION_PROCESSOR, new BeanTypeProcessor(), new MappingProcessor());
     }
 
     /** 按 Core 配置自动扫描，供 hconfig 实例化。 */

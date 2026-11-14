@@ -7,6 +7,7 @@
  * https://www.apache.org/licenses/LICENSE-2.0
  */
 package net.hasor.core.binder;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.EventListener;
 import java.util.List;
@@ -21,6 +22,7 @@ import net.hasor.cobble.logging.Logger;
 import net.hasor.cobble.logging.LoggerFactory;
 import net.hasor.cobble.provider.Scope;
 import net.hasor.cobble.setting.Settings;
+import net.hasor.core.AnnotationInjector;
 import net.hasor.core.ApiBinder;
 import net.hasor.core.BindInfo;
 import net.hasor.core.EventContext;
@@ -38,6 +40,11 @@ public class ApiBinderWrap implements ApiBinder {
 
     public ApiBinderWrap(ApiBinder apiBinder) {
         this.apiBinder = Objects.requireNonNull(apiBinder);
+    }
+
+    @Override
+    public <A extends Annotation> void bindAnnotationInjector(Class<A> annotationType, AnnotationInjector<A> injector) {
+        this.apiBinder.bindAnnotationInjector(annotationType, injector);
     }
 
     @Override

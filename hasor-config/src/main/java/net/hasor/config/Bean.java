@@ -9,12 +9,12 @@
 package net.hasor.config;
 import java.lang.annotation.*;
 
-/** Declares that a method creates a bean managed by Hasor. */
+/** Registers a scanned class or the result of a factory method as a Hasor-managed bean. */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target({ ElementType.TYPE, ElementType.METHOD })
 public @interface Bean {
-    /** Bean name. The factory method name is used when this value is empty. */
+    /** Bean name. Defaults to the factory method name or the class name with a lowercase initial. */
     String value() default "";
 
     /** Whether the bean is a singleton. */

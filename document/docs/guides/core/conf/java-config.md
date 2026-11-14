@@ -65,6 +65,31 @@ apiBinder.installModule(ConfigurationModule.of(Application.class));
 apiBinder.installModule(ConfigurationModule.auto());
 ```
 
+## 扫描业务 Bean
+
+`@Bean` 可以直接标在业务类上，按 `hasor.loadPackages` 扫描注册，无需逐个调用 `bindType`：
+
+```java
+import net.hasor.config.Bean;
+import net.hasor.core.Inject;
+
+@Bean
+public class GreetingService {
+    @Inject
+    private GreetingRepository repository;
+
+    public String message() {
+        return this.repository.message();
+    }
+}
+```
+
+依赖类也使用 `@Bean` 声明。默认注册为单例，在容器启动时创建，支持 Hasor 的字段与构造方法注入。
+默认绑定 ID 为类名首字母小写；显式 `@Bean("name")` 同时设置绑定 ID 和名称。`singleton`、`initMethod`、`destroyMethod` 与方法级声明使用相同配置项。
+类必须可独立实例化；已有显式类型绑定优先，重复扫描不会重复注册，绑定 ID 冲突会报错。
+
+Hasor Boot 默认扫描启动类所在包及子包，也可通过 `hasor.loadPackages` 指定范围。
+
 ## Bean 工厂与生命周期
 
 `@Bean` 标注配置类自身声明的方法，以返回类型注册 Bean。方法参数默认按类型从容器获取，可用于表达 Bean 间依赖。参数上使用 `@Inject("name")` 时按名称和类型获取，使用 `@Inject(value = "beanId", byType = Type.ByID)` 时按绑定 ID 获取。未设置 `@Inject.value` 时仍按类型获取。
