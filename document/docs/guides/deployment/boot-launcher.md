@@ -2,7 +2,7 @@
 id: boot-launcher
 sidebar_position: 3
 title: 5.2 Boot 启动器
-description: 统一 Boot 入口、Core 启动方式、生命周期与健康检查。
+description: 统一 Boot 入口、无头运行、生命周期与健康检查。
 ---
 
 # 5.2 Boot 启动器
@@ -25,6 +25,39 @@ public class Application {
 未显式配置扫描范围时，Boot 扫描所有 `sources` 所在包及其子包，多个包去重后取并集。显式配置 `hasor.loadPackages` 或 `HASOR_LOAD_PACKAGES` 时使用指定范围；`hasor.loadPackages` 设置为空字符串可关闭扫描。没有传入 source 时沿用 Core 默认配置。
 
 Web 应用启动成功后，控制台会打印完整访问地址，例如 `Hasor Web started at http://127.0.0.1:8080/console`。地址来自 `hasor.boot.web.connectors.http.host`、实际绑定端口和 `hasor.boot.web.server.contextPath`；配置端口为 `0` 时显示实际分配的端口。监听 `0.0.0.0` 时显示本机入口 `localhost`，IPv6 通配监听显示 `[::1]`，其他 IPv6 地址加方括号。禁用 HTTP 时仅提示没有 HTTP 监听端口。
+
+## 无头运行
+
+只运行任务、RPC 或 Telnet 时，可保留 Web 依赖，在 `hconfig.xml` 中关闭 Web 容器自动启动：
+
+```xml
+<config>
+    <hasor.boot.web>
+        <enabled>false</enabled>
+    </hasor.boot.web>
+</config>
+```
+
+也可以通过代码设置：
+
+```java
+import net.hasor.boot.Boot;
+import net.hasor.boot.BootApplication;
+
+public class Application {
+    public static void main(String[] args) throws Exception {
+        try (BootApplication app = new Boot()
+                .sources(Application.class)
+                .arguments(args)
+                .property("hasor.boot.web.enabled", false)
+                .start()) {
+            app.join();
+        }
+    }
+}
+```
+
+`hasor.boot.web.enabled` 默认 `true`，设为 `false` 时跳过 Tomcat、Jetty、Undertow 的自动创建和启动，普通 `Hasor.create().build()` 同样生效。`hasor.boot.web.connectors.http.enabled=false` 只关闭 HTTP 监听，仍初始化 Web 上下文。
 
 ## Core 启动入口
 

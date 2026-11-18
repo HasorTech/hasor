@@ -150,3 +150,5 @@ public class Application {
 `WebServers.create(config)` 只创建服务对象，需要调用方负责 `start()`、`stop()`；`WebServers.run(config)` 会启动服务并注册 JVM shutdown hook，`join()` 用于等待服务停止。
 
 容器依赖还会注册自动启动 Module：普通 `Hasor.create().build()` 的 `onStart` 会启动服务，外层 AppContext 关闭时停止服务。当 Hasor 已绑定 `ServletContext` 时，这些 Module 会跳过，避免再次启动容器。自动启动模式会由 `RuntimeListener` 创建 Web AppContext，不能假定它与外层 AppContext 是同一个对象；需要显式配置请求使用的上下文时使用上面的工厂方式。自动启动模式下也应只引入一个容器。
+
+设置 `hasor.boot.web.enabled=false` 可关闭容器自动启动，配置见 [无头运行](./boot-launcher.md#无头运行)。直接调用 `WebServers.run(...)` 属于显式启动，不受此开关影响。

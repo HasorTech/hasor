@@ -21,9 +21,10 @@ public class UndertowWebServerModule implements Module {
 
     @Override
     public void loadModule(ApiBinder apiBinder) {
-        if (apiBinder.getContext() instanceof ServletContext) {
+        if (!apiBinder.getSettings().getBoolean("hasor.boot.web.enabled", true) || apiBinder.getContext() instanceof ServletContext) {
             throw new IgnoreModuleException();
         }
+
         WebServerConfig config = new WebServerConfig().loadSettings(apiBinder.getSettings());
         this.server = (UndertowWebServer) WebServers.create(config);
         apiBinder.bindType(WebServer.class).toInstance(this.server);

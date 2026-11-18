@@ -12,6 +12,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import javax.servlet.http.HttpServletResponse;
+import net.hasor.boot.Boot;
+import net.hasor.boot.BootApplication;
 import net.hasor.boot.web.WebServer;
 import net.hasor.boot.web.WebServerConfig;
 import net.hasor.boot.web.WebServers;
@@ -26,6 +28,22 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TomcatWebServerTest {
+    @Test
+    public void disabledWebSkipsBootContainer() throws Exception {
+        // 依赖仍在类路径中，但统一启动不创建 Web 容器。
+        try (BootApplication application = new Boot().property("hasor.boot.web.enabled", false).start()) {
+            assertTrue(application.getAppContext().findBindingRegister(WebServer.class).isEmpty());
+        }
+    }
+
+    @Test
+    public void disabledWebSkipsAutomaticModule() throws Exception {
+        // 普通 Hasor 启动同样尊重开关，不自动创建嵌入式容器。
+        try (AppContext application = Hasor.create().registerShutdownHook(false).addSettings(Settings.DefaultNameSpace, "hasor.boot.web.enabled", false).build()) {
+            assertTrue(application.findBindingRegister(WebServer.class).isEmpty());
+        }
+    }
+
     @Test
     public void jarShouldAutoStartAndStopWithHasor() {
         AppContext appContext = Hasor.create()//

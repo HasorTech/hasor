@@ -150,3 +150,5 @@ When a factory is configured, `RuntimeListener` uses its result and skips defaul
 `WebServers.create(config)` only creates the service object; the caller owns `start()` and `stop()`. `WebServers.run(config)` starts it and registers a JVM shutdown hook; `join()` waits for it to stop.
 
 Container dependencies also register an auto-start Module: `onStart` of an ordinary `Hasor.create().build()` starts the service, and closing the outer AppContext stops it. These Modules skip startup when Hasor is already bound to a `ServletContext`, avoiding a second container. In auto-start mode, `RuntimeListener` creates the Web AppContext; do not assume it is the same object as the outer AppContext. Use the factory above when you need to configure the request context explicitly. Auto-start mode also requires exactly one container.
+
+Set `hasor.boot.web.enabled=false` to disable automatic container startup; see [Headless mode](./boot-launcher.md#headless-mode). Direct calls to `WebServers.run(...)` explicitly start the container and are unaffected by this switch.

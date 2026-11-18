@@ -22,6 +22,10 @@ import net.hasor.core.Module;
 public final class WebBootExtension implements BootExtension {
     @Override
     public BootLauncher configure(BootConfiguration configuration, BootLauncher next) {
+        if (!configuration.getSettings().getBoolean("hasor.boot.web.enabled", true)) {
+            return next;
+        }
+
         return (environment, modules) -> {
             if (environment != null) {
                 throw new IllegalStateException("Web requires ownership of the application environment.");

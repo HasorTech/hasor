@@ -2,7 +2,7 @@
 id: boot-launcher
 sidebar_position: 3
 title: 5.2 Boot Launcher
-description: Unified Boot startup, Core entry points, lifecycle, and health checks.
+description: Unified Boot startup, headless mode, lifecycle, and health checks.
 ---
 
 # 5.2 Boot Launcher
@@ -25,6 +25,39 @@ Ordinary applications depend on `net.hasor:hasor-boot:@project.docsVersion@`; We
 If no scan scope is explicitly configured, Boot scans each source package and its subpackages, combining distinct source packages. An explicit `hasor.loadPackages` or `HASOR_LOAD_PACKAGES` takes precedence; an empty `hasor.loadPackages` disables scanning. Without sources, Boot retains the Core defaults.
 
 After a Web application starts successfully, the console prints a complete URL such as `Hasor Web started at http://127.0.0.1:8080/console`. It uses `hasor.boot.web.connectors.http.host`, the actual bound port, and `hasor.boot.web.server.contextPath`. Port `0` displays the assigned port. An IPv4 wildcard listener (`0.0.0.0`) displays `localhost`; an IPv6 wildcard listener displays `[::1]`, and other IPv6 addresses are enclosed in brackets. With HTTP disabled, the log states that no HTTP listener is active.
+
+## Headless mode
+
+For tasks, RPC, or Telnet applications, retain the Web dependencies and disable automatic Web container startup in `hconfig.xml`:
+
+```xml
+<config>
+    <hasor.boot.web>
+        <enabled>false</enabled>
+    </hasor.boot.web>
+</config>
+```
+
+Alternatively, configure it in code:
+
+```java
+import net.hasor.boot.Boot;
+import net.hasor.boot.BootApplication;
+
+public class Application {
+    public static void main(String[] args) throws Exception {
+        try (BootApplication app = new Boot()
+                .sources(Application.class)
+                .arguments(args)
+                .property("hasor.boot.web.enabled", false)
+                .start()) {
+            app.join();
+        }
+    }
+}
+```
+
+`hasor.boot.web.enabled` defaults to `true`. Setting it to `false` skips automatic creation and startup of Tomcat, Jetty, and Undertow, including ordinary `Hasor.create().build()` startup. Setting `hasor.boot.web.connectors.http.enabled=false` only disables the HTTP listener and still initializes the Web context.
 
 ## Core entry point
 

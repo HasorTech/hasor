@@ -309,3 +309,7 @@ APP-INF/lib/                运行依赖 JAR
 ```
 
 使用 Maven 打包时，另行发布 `hasor-boot-maven-plugin`。这些命令说明构建方式，不代表当前工作区已完成测试或发布。
+
+### 无头运行
+
+设置 `hasor.boot.web.enabled=false` 可在保留 Web 依赖的情况下关闭 Web 容器，适用于只启动任务、RPC 或 Telnet 监听的应用。该配置同时适用于 `Boot` 和普通 `Hasor` 启动，默认值为 `true`。它不同于 `hasor.boot.web.connectors.http.enabled=false`，后者只关闭 HTTP 监听。
