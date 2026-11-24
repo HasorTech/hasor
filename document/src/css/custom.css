@@ -1,3 +1,5 @@
+@import '../../hasor-tech/chrome.css';
+@import '../../hasor-tech/markdown.css';
 /**
  * Any CSS included here will be global. The classic template
  * bundles Infima by default. Infima is a CSS framework designed to
@@ -13,22 +15,14 @@
     --ifm-color-primary-light: #4e89e8;
     --ifm-color-primary-lighter: #5a91ea;
     --ifm-color-primary-lightest: #80aaef;
-    --ifm-breadcrumb-padding-vertical: 1px;
-    --ifm-breadcrumb-separator-size: 0.8rem;
-    --ifm-table-cell-padding: 0.3rem;
     --ifm-font-size-base: 85%;
     --ifm-code-font-size: 75%;
     --ifm-line-height-base: 22px;
     --ifm-pre-padding: 0.3rem;
-    --doc-sidebar-width: 220px !important;
 }
 
 :where(:root) {
     --docusaurus-highlighted-code-line-bg: rgb(218 218 218) !important;
-}
-
-.padding--lg {
-    padding: 0.5rem !important;
 }
 
 .docusaurus-highlight-code-line {

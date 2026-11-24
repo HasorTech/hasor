@@ -205,7 +205,7 @@ WebServers.run(config).join();
 
 单页应用回退默认关闭，只对 `spaPaths` 指定且不带扩展名的路径生效；缺失的 JS、CSS 不会回退为首页。部署到非根上下文时，还需同步设置前端资源基路径。不要将私密配置放进公开资源目录。
 
-返回值渲染是 Hasor Web 的内置机制：默认字符串输出文本，对象使用 JSON 渲染器，`null` 与 `void` 不生成默认响应体。使用 JSON 时，需要应用提供受支持的 JSON 库；不要把引入 Boot 容器依赖等同于引入 JSON 实现。默认引擎由 `hasor.render.*` 配置，详细用法参见 [Hasor Web 文档](../document/docs/guides/webmvc/overview.md)。
+返回值渲染是 Hasor Web 的内置机制：默认字符串输出文本，对象使用 JSON 渲染器，`null` 与 `void` 不生成默认响应体。使用 JSON 时，需要应用提供受支持的 JSON 库；不要把引入 Boot 容器依赖等同于引入 JSON 实现。默认引擎由 `hasor.render.*` 配置，详细用法参见 [Hasor Web 文档](https://www.hasor.net/cn/hasor/docs/guides/webmvc/overview)。
 
 ## Maven 打包
 
@@ -259,7 +259,7 @@ Web 扩展默认提供 `GET /health`，健康时返回 HTTP 200 和 `{"status":"
 支持多个检查项，名称取容器绑定名称，为空时取绑定 ID；`@Bean` 默认使用方法名，也可通过 `@Bean("database")` 显式命名。名称必须非空且唯一；检查同步执行，实现应线程安全，并为数据库、网络等外部调用自行设置超时。
 默认检查仅表示应用容器已启动，不会自动探测数据库或其他业务依赖。内置接口沿用 Hasor Web 的 JSON 渲染，需要应用提供 JSON 库。
 
-完整示例见[启动文档](../document/docs/guides/deployment/boot-launcher.md)。
+完整示例见[启动文档](https://www.hasor.net/cn/hasor/docs/guides/deployment/boot-launcher)。
 
 ## 模块结构
 

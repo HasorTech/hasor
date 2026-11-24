@@ -94,4 +94,4 @@ public class StartModule implements WebModule {
 
 ## 使用文档
 
-[Hasor Web 使用文档](../document/docs/guides/webmvc/overview.md)
+[Hasor Web 使用文档](https://www.hasor.net/cn/hasor/docs/guides/webmvc/overview)

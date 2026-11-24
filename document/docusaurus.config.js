@@ -4,15 +4,15 @@
 const prismReactRenderer = require('prism-react-renderer');
 const lightCodeTheme = prismReactRenderer.themes ? prismReactRenderer.themes.github : require('prism-react-renderer/themes/github');
 const darkCodeTheme = prismReactRenderer.themes ? prismReactRenderer.themes.dracula : require('prism-react-renderer/themes/dracula');
-const analyticsPlugin = require('./plugins/analytics.js');
+const {onlineOrigins} = require('./hasor-tech/routes');
 const projectVars = require('./plugins/projectVars.js');
 
 /** @type {import('@docusaurus/types').Config} */
-const config = {
+const config = require('./hasor-tech/config')({
     title: 'Hasor',
     tagline: 'Hasor 框架',
-    url: 'https://www.hasor.net',
-    baseUrl: '/',
+    url: process.env.DOCS_URL || onlineOrigins.hasor,
+    baseUrl: process.env.DOCS_BASE_URL || '/',
     onBrokenLinks: 'throw',
     markdown: {
         preprocessor: ({fileContent}) => require('./plugins/remark-project-vars.js').replaceVariables(fileContent, projectVars),
@@ -25,8 +25,8 @@ const config = {
             onBrokenMarkdownLinks: 'warn',
         },
     },
-    favicon: 'img/favicon.ico',
-    organizationName: 'zycgit', // Usually your GitHub org/user name.
+    favicon: 'img/favicon/hasor.svg',
+    organizationName: 'HasorTech', // Usually your GitHub org/user name.
     projectName: 'hasor',   // Usually your repo name.
 
     i18n: {
@@ -40,9 +40,11 @@ const config = {
             /** @type {import('@docusaurus/preset-classic').Options} */
             ({
                 docs: {
+                    path: 'docs/cn/docusaurus-plugin-content-docs/current',
                     remarkPlugins: [[require('./plugins/remark-project-vars.js'), projectVars]],
                     sidebarPath: require.resolve('./sidebars.js'),
-                    editUrl: 'https://gitee.com/zycgit/hasor-doc/tree/master/',
+                    editLocalizedFiles: true,
+                    editUrl: 'https://gitee.com/hasortech/hasor/blob/main/document/',
                 },
                 blog: false,
                 theme: {
@@ -66,40 +68,6 @@ const config = {
         colorMode: {
             disableSwitch: true,
         },
-        navbar: {
-            logo: {
-                alt: 'Hasor Logo',
-                src: 'img/logo.svg',
-            },
-            items: [
-                {
-                    type: 'doc',
-                    docId: 'guides/getting-started/quickstart',
-                    position: 'left',
-                    label: '文档手册',
-                },
-                {
-                    type: 'doc',
-                    docId: 'releases/latest',
-                    position: 'left',
-                    label: '版本说明',
-                },
-                {
-                    label: '码云',
-                    href: 'https://gitee.com/zycgit/hasor',
-                    position: 'right',
-                },
-                {
-                    label: 'Github',
-                    href: 'https://github.com/zycgit/hasor',
-                    position: 'right',
-                },
-                {
-                    type: 'localeDropdown',
-                    position: 'right',
-                }
-            ]
-        },
         prism: {
             theme: lightCodeTheme,
             darkTheme: darkCodeTheme,
@@ -107,15 +75,10 @@ const config = {
         },
         footer: {
             style: 'dark',
-            copyright: `Copyright © ${new Date().getFullYear()} Hasor. Built with Docusaurus.<br/>
-<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011002013536">
-<img src="/img/beian.png" style="display: inline-block;">浙公网安备 33011002013536号
-</a>&nbsp;&nbsp;<a target="_blank" href="https://beian.miit.gov.cn/#/Integrated/index">浙ICP备18034797号-1</a>
-<div id="analyticsDiv" style="display: inline-block;"></div>`,
+            copyright: `Copyright © ${new Date().getFullYear()} Hasor. Built with Docusaurus.`,
         },
     },
     plugins: [
-        analyticsPlugin,
         [
             require.resolve('./plugins/llms.js'),
             {
@@ -150,13 +113,13 @@ const config = {
             }),
         ],
     ]
-};
+}, 'hasor');
 
 module.exports = function createConfig() {
     if (process.env.DOCUSAURUS_CURRENT_LOCALE !== 'en') {
         return config;
     }
-    const messages = require('./i18n/en/code.json');
+    const messages = require('./docs/en/code.json');
     return {
         ...config,
         tagline: messages['site.tagline'].message,

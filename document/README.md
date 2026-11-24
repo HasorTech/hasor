@@ -12,7 +12,7 @@ npm ci
 npm run build
 ```
 
-`npm run start` 启动本地预览。侧边栏自动读取 `docs/guides`，新增页面通过 front matter 的 `sidebar_position` 设置顺序。构建涵盖中文和英文 locale；英文没有对应翻译的页面使用默认文档。
+`npm run start:alone` 启动本地预览。侧边栏自动读取 `docs/cn/docusaurus-plugin-content-docs/current/guides`，新增页面通过 front matter 的 `sidebar_position` 设置顺序。构建涵盖中文和英文 locale；英文没有对应翻译的页面使用默认文档。
 
 ## 文档版本变量
 
@@ -30,15 +30,15 @@ npm run build
 
 ## 英文文档同步
 
-中文源文档位于 `docs/`，英文正文位于 `i18n/en/docusaurus-plugin-content-docs/current/`，保持相同的文件路径、文档 ID 和目录顺序。版本日期、更新条目和代码示例必须同步；准确的已有译文无需重复改写。
+中文源文档位于 `docs/cn/docusaurus-plugin-content-docs/current/`，英文正文位于 `docs/en/docusaurus-plugin-content-docs/current/`，保持相同的文件路径、文档 ID 和目录顺序。版本日期、更新条目和代码示例必须同步；准确的已有译文无需重复改写。
 
 ## AI 文档索引
 
-`npm run build` 通过 `@signalwire/docusaurus-plugin-llms-txt` 收集现有文档页面，再由 `plugins/llms.js` 整理项目介绍和目录。每种语言只生成一个入口：`build/llms.txt` 和 `build/en/llms.txt`；文档构建与本地开发只需要 Node.js 依赖环境。
+`npm run build` 通过 `@signalwire/docusaurus-plugin-llms-txt` 收集现有文档页面，再由 `plugins/llms.js` 整理项目介绍和目录。每种语言只生成一个入口：门户构建输出中的 `build/cn/hasor/llms.txt` 和 `build/en/hasor/llms.txt`；文档构建与本地开发只需要 Node.js 依赖环境。
 
 索引先说明项目定位、架构、能力选择和第一次调用流程，再列出使用指南、驱动和数据源能力等文档。版本说明和博客位于 `Optional` 部分，链接直接指向相应语言的现有网页。页面的 `rel="describedby"` 指向当前语言的 `llms.txt`。
 
-入口介绍复用中英文概览正文。`docusaurus.config.js` 中的 `overview` 指向 `docs/guides/getting-started/overview.md`；插件读取对应语言文件中 `{/* llms:start */}` 与 `{/* llms:end */}` 之间的普通 Markdown。维护项目定位、架构与起步流程时修改这段正文即可，文档页面和 AI 入口会一起更新。
+入口介绍复用中英文概览正文。`docusaurus.config.js` 中的 `overview` 指定每种语言文档目录下的 `guides/getting-started/overview.md`；插件读取对应语言文件中 `{/* llms:start */}` 与 `{/* llms:end */}` 之间的普通 Markdown。维护项目定位、架构与起步流程时修改这段正文即可，文档页面和 AI 入口会一起更新。
 
 摘要中的链接使用实际发布地址，可写成相对于概览的路径；插件会移除 `.md`、`.mdx` 扩展名并补齐站点地址与语言前缀。文档版本来自 `plugins/projectVars.js`，使用前应核对项目依赖版本。
 
@@ -46,7 +46,7 @@ npm run build
 
 > 先读取本项目的 `/llms.txt`，理解核心理念与适用场景，选择对应的使用指南。核对项目依赖版本，再参考文档中的调用方式与示例编写代码并编译验证。
 
-索引随静态站点发布，不手工修改或提交生成文件。`npm run start` 用于开发文档页面；查看完整索引使用构建后的站点：
+索引随静态站点发布，不手工修改或提交生成文件。`npm run start:alone` 用于开发文档页面；查看完整索引使用构建后的站点：
 
 ```bash
 npm run build
@@ -59,7 +59,7 @@ npm run serve -- --host 127.0.0.1 --port 3000
 
 ### 配置
 
-将任一工程的 `oss-config.sample.json` 复制到 `~/.hasor-docs-deploy.json`，填写真实配置。两个样例内容相同，都包含两个站点；Bucket 名称只是占位示例。
+在 `~/.hasor-docs-deploy.json` 中配置发布目标，字段见 `oss-config.sample.json`。门户使用 `sites.portal`，独立站使用 `sites.hasor`。
 
 - `credentials`：按名称管理 AccessKey。站点通过 `credential` 引用，可共享凭据，也可使用不同凭据。
 - `sites.<站点>.endpoint`、`bucketName`：OSS 上传目标。
@@ -76,21 +76,19 @@ HASOR_DOCS_DEPLOY_CONFIG=/absolute/path/docs-deploy.json ./deploy.sh
 
 ### 目标隔离
 
-优先使用不同 Bucket。共享 Bucket 时，两站点必须配置互不重叠的前缀；根目录与任意子目录、同一目录及父子目录组合都会被拒绝。同域名的 CDN 刷新目录也不能重叠，避免刷新另一个站点。校验覆盖配置中的所有站点。
-
-请确认 CDN 回源规则指向对应 Bucket/前缀，且 Docusaurus 的 `url`、`baseUrl` 与实际访问地址匹配；脚本不能验证云端回源配置。没有回源路径改写时，OSS 前缀与 CDN URL 路径应对应；部署到子路径还需同步调整 Docusaurus 的 `baseUrl`。
+门户模式使用共享目标，在发布前缀下写入 `cn/hasor/`、`en/hasor/` 和自动选语言的 `hasor/` 入口。独立模式在本项目配置的前缀下写入 `cn/`、`en/` 与根入口。门户可以复用完全相同的 Hasor 目标配置，其他重叠目标会被校验拒绝。
 
 ### 执行发布
 
 需要 Node.js 20+、npm、Python 3（含 venv 和 pip），支持 Linux/macOS。首次使用或前端依赖更新后，在本目录执行 `npm ci`，随后执行：
 
 ```bash
-./deploy.sh
+./deploy.sh --mode portal --dry-run
 ```
 
-脚本通过 `.deploy-venv` 安装 Python 依赖，再依次构建中英文站点、上传 `build/`、提交 CDN 目录刷新。任一步失败即返回非零状态；构建或上传失败不会继续刷新 CDN。一次完整发布只读取一次配置，上传和刷新使用同一份目标信息。
+脚本通过 `.deploy-venv` 安装 Python 依赖，然后构建中英文站点。`--dry-run` 只验证产物和发布清单。实际发布使用相同模式并去掉该参数后，脚本会上传构建产物并提交 CDN 刷新。任一步失败即返回非零状态；构建或上传失败不会继续刷新 CDN。一次完整发布只读取一次配置，上传和刷新使用同一份目标信息。
 
-发布锁覆盖构建、上传和刷新，锁文件在 `~/.cache/hasor-docs-deploy/`。同一台机器、同一用户下，相同站点跨工作副本也不能同时发布；不同站点可以独立发布。锁在退出时释放，不要删除使用中的锁文件。多机器或不同系统用户的并发发布需要在 CI 中另行串行化。
+发布锁覆盖构建、上传和刷新，锁文件在 `~/.cache/hasor-docs-deploy/`。同一台机器、同一用户下，相同站点跨工作副本也不能同时发布；门户模式和 Hasor 共享目标锁。锁在退出时释放，不要删除使用中的锁文件。多机器或不同系统用户的并发发布需要在 CI 中另行串行化。
 
 上传覆盖目标前缀下的同名文件，不删除远端旧文件，不是原子发布。部分上传成功后失败，需修复原因并重新执行；CDN 刷新请求被接受也不代表所有节点已完成刷新。凭据需具有目标上传及 CDN 刷新权限。
 
@@ -104,4 +102,4 @@ HASOR_DOCS_DEPLOY_CONFIG=/absolute/path/docs-deploy.json ./deploy.sh
 .deploy-venv/bin/python refresh_website_cdn.py
 ```
 
-两个独立入口同样使用配置校验和站点锁。`npm run deploy` 是 Docusaurus 自带的部署命令，不等同于 OSS/CDN 的 `./deploy.sh`。
+两个独立入口同样使用配置校验和站点锁。`npm run deploy:docusaurus` 是 Docusaurus 自带的部署命令，不等同于 OSS/CDN 的 `./deploy.sh`。

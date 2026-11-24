@@ -20,7 +20,7 @@ Hasor 自 2013 年持续维护。当前稳定版为 `5.3.0`。
 - **运行保障**：Web Boot 默认提供健康检查，可通过业务 `HealthCheck` 扩展依赖状态。
 - **可执行 JAR**：提供 Gradle `bootJar` 和 Maven `repackage`，应用及依赖可以打包后直接运行。
 
-数据库访问不再内置于 Hasor，相关能力由同一生态中的 [dbVisitor](https://www.dbvisitor.net/) 提供。
+数据库访问不再内置于 Hasor，相关能力由同一生态中的 [dbVisitor](https://www.hasor.net/dbvisitor/) 提供。
 
 ## 快速开始
 
@@ -120,10 +120,10 @@ curl http://localhost:8080/health
 ## 示例与文档
 
 - [`demo-hasor-boot`](demo-hasor-boot/README.md)：Gradle、Maven 的普通应用和 Web 应用完整示例。
-- [快速上手](document/docs/guides/getting-started/overview.md)：按 Core、Config、Web、Boot 选择能力。
-- [工程配置与打包](document/docs/guides/deployment/project-config.md)：Maven、Gradle 依赖和可执行 JAR 配置。
-- [项目文档](https://www.hasor.net)：完整中文文档。
-- [AI 文档索引](https://www.hasor.net/llms.txt) · [English](https://www.hasor.net/en/llms.txt)
+- [快速上手](https://www.hasor.net/cn/hasor/docs/guides/getting-started/overview)：按 Core、Config、Web、Boot 选择能力。
+- [工程配置与打包](https://www.hasor.net/cn/hasor/docs/guides/deployment/project-config)：Maven、Gradle 依赖和可执行 JAR 配置。
+- [项目文档](https://www.hasor.net/hasor/)：完整使用文档。
+- [AI 文档索引](https://www.hasor.net/cn/hasor/llms.txt) · [English](https://www.hasor.net/en/hasor/llms.txt)
 
 ## 社区与许可证
 

@@ -74,4 +74,4 @@ public class Application {
 
 ## 使用文档
 
-[Hasor Core 使用文档](../document/docs/guides/core/overview.md)
+[Hasor Core 使用文档](https://www.hasor.net/cn/hasor/docs/guides/core/overview)

@@ -1,5 +1,5 @@
 {
-  "url": "https://www.hasor.net/",
+  "url": "https://www.hasor.net/hasor/",
   "licenses": [
     {
       "name": "The Apache Software License, Version 2.0",
@@ -13,9 +13,9 @@
     }
   ],
   "scm": {
-    "connection": "scm:git:git@gitee.com:zycgit/hasor.git",
-    "developerConnection": "scm:git:git@gitee.com:zycgit/hasor.git",
-    "url": "https://gitee.com/zycgit/hasor",
+    "connection": "scm:git:git@gitee.com:hasortech/hasor.git",
+    "developerConnection": "scm:git:git@gitee.com:hasortech/hasor.git",
+    "url": "https://gitee.com/hasortech/hasor",
     "tag": "HEAD"
   }
 }

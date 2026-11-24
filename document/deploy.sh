@@ -10,6 +10,12 @@ for command_name in python3 npm; do
     fi
 done
 
+for argument in "$@"; do
+    case "$argument" in
+        --dry-run|-h|--help) exec python3 -B deploy.py "$@" ;;
+    esac
+done
+
 # Keep deployment dependencies separate from the system Python environment.
 dependency_log=$(mktemp)
 trap 'rm -f -- "$dependency_log"' EXIT
@@ -31,6 +37,4 @@ run_dependency_step() {
 run_dependency_step python3 -m venv .deploy-venv
 run_dependency_step .deploy-venv/bin/python -m pip install --disable-pip-version-check -r requirements-deploy.txt
 
-.deploy-venv/bin/python deploy.py
-
-echo "Documentation uploaded and CDN refresh submitted successfully."
+.deploy-venv/bin/python -B deploy.py "$@"

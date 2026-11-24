@@ -105,4 +105,4 @@ Config 已通过框架配置登记自动装配模块，无需再次手工注册�
 
 ## 使用文档
 
-[Hasor Config 使用文档](../document/docs/guides/core/conf/java-config.md)
+[Hasor Config 使用文档](https://www.hasor.net/cn/hasor/docs/guides/core/conf/java-config)
