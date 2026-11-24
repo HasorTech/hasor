@@ -24,6 +24,7 @@ import net.hasor.cobble.ArrayUtils;
 import net.hasor.cobble.ResourcesUtils;
 import net.hasor.cobble.dynamic.Matchers;
 import net.hasor.cobble.loader.ResourceLoader;
+import net.hasor.cobble.loader.providers.PrefixResourceLoader;
 import net.hasor.core.ApiBinder;
 import net.hasor.core.BindInfo;
 import net.hasor.core.TypeSupplier;
@@ -41,6 +42,11 @@ public interface WebApiBinder extends ApiBinder, MimeType {
 
     /** Configure static resources outside MVC interception and rendering. */
     ResourceBinder addResource(String pathPattern, ResourceLoader... loaders);
+
+    /** Serve static resources under a directory of the application's resource loader. */
+    default ResourceBinder addClasspathResource(String pathPattern, String directory) {
+        return this.addResource(pathPattern, new PrefixResourceLoader(this.getResourceLoader(), directory));
+    }
 
     /** 获取ServletContext对象。 */
     ServletContext getServletContext();

@@ -7,7 +7,6 @@
  */
 package net.hasor.config.webconfig;
 import java.util.concurrent.atomic.AtomicInteger;
-import net.hasor.cobble.loader.providers.PrefixResourceLoader;
 import net.hasor.config.Configuration;
 import net.hasor.config.web.WebMvcConfigurer;
 import net.hasor.config.web.cors.CorsRegistry;
@@ -29,7 +28,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(WebApiBinder binder) {
         RESOURCE_CONFIGURES.incrementAndGet();
-        binder.addResource("/assets/**", new PrefixResourceLoader(binder.getResourceLoader(), "web-assets"))//
+        binder.addClasspathResource("/assets/**", "web-assets")//
                 .welcomeFile("home.html")//
                 .order(-100);
     }
