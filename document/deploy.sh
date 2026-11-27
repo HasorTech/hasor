@@ -3,6 +3,10 @@ set -euo pipefail
 
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 
+if (( $# == 0 )); then
+    exec python3 -B deploy.py
+fi
+
 for command_name in python3 npm; do
     if ! command -v "$command_name" >/dev/null 2>&1; then
         echo "Error: $command_name is required." >&2

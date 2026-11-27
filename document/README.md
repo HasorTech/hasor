@@ -69,7 +69,7 @@ npm run serve -- --host 127.0.0.1 --port 3000
 需要显式指定其他配置文件时，设置环境变量，不存在或无效时直接报错，不回退：
 
 ```bash
-HASOR_DOCS_DEPLOY_CONFIG=/absolute/path/docs-deploy.json ./deploy.sh
+HASOR_DOCS_DEPLOY_CONFIG=/absolute/path/docs-deploy.json ./deploy.sh --mode alone
 ```
 
 旧的 `~/.dbvisitor-oss-config.json`、`~/.hasor-oss-config.json` 和工程内 `oss-config.json` 不再自动读取。请把旧配置中的凭据迁入 `credentials`，上传目标及 CDN 地址迁入对应 `sites` 节点。脚本不会自动迁移或删除旧文件。配置含密钥，不要提交到 Git；建议设置 `chmod 600 ~/.hasor-docs-deploy.json`。
@@ -86,6 +86,8 @@ HASOR_DOCS_DEPLOY_CONFIG=/absolute/path/docs-deploy.json ./deploy.sh
 ./deploy.sh --mode portal --dry-run
 ```
 
+发布时必须显式指定模式。`--mode alone` 用于独立站，`--mode portal` 用于门户子站。直接运行 `./deploy.sh` 会显示帮助。
+
 脚本通过 `.deploy-venv` 安装 Python 依赖，然后构建中英文站点。`--dry-run` 只验证产物和发布清单。实际发布使用相同模式并去掉该参数后，脚本会上传构建产物并提交 CDN 刷新。任一步失败即返回非零状态；构建或上传失败不会继续刷新 CDN。一次完整发布只读取一次配置，上传和刷新使用同一份目标信息。
 
 发布锁覆盖构建、上传和刷新，锁文件在 `~/.cache/hasor-docs-deploy/`。同一台机器、同一用户下，相同站点跨工作副本也不能同时发布；门户模式和 Hasor 共享目标锁。锁在退出时释放，不要删除使用中的锁文件。多机器或不同系统用户的并发发布需要在 CI 中另行串行化。
@@ -96,7 +98,7 @@ HASOR_DOCS_DEPLOY_CONFIG=/absolute/path/docs-deploy.json ./deploy.sh
 
 ```bash
 # 只构建和上传
-.deploy-venv/bin/python deploy_to_oss.py
+.deploy-venv/bin/python deploy_to_oss.py --mode alone
 
 # 只刷新当前站点 CDN
 .deploy-venv/bin/python refresh_website_cdn.py

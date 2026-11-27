@@ -88,6 +88,7 @@ const config = require('./hasor-tech/config')({
                     en: `Hasor ${projectVars.lastReleaseVer} documentation: dependency injection, configuration, Web MVC, and application startup.`,
                 },
                 depth: 2,
+                logLevel: 0, // Route exclusions below are expected.
                 onRouteError: 'throw',
                 content: {
                     enableMarkdownFiles: false,

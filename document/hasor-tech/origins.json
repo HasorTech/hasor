@@ -4,17 +4,19 @@
     "hasor": "https://www.hasor.net",
     "dbvisitor": "https://www.hasor.net",
     "dataql": "https://www.hasor.net",
+    "dataway": "https://www.hasor.net",
     "meteor": "https://www.hasor.net",
     "neta": "https://www.hasor.net",
     "cobble": "https://www.hasor.net"
   },
   "dev": {
-    "www": "http://localhost:4300",
-    "hasor": "http://localhost:4301",
-    "dbvisitor": "http://localhost:4302",
-    "dataql": "http://localhost:4303",
-    "meteor": "http://localhost:4304",
-    "neta": "http://localhost:4305",
-    "cobble": "http://localhost:4306"
+    "www": "http://localhost:5300",
+    "hasor": "http://localhost:5301",
+    "dbvisitor": "http://localhost:5302",
+    "dataql": "http://localhost:5303",
+    "dataway": "http://localhost:5307",
+    "meteor": "http://localhost:5304",
+    "neta": "http://localhost:5305",
+    "cobble": "http://localhost:5306"
   }
 }
