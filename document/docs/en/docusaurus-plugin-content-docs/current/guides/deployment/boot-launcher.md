@@ -20,7 +20,7 @@ public class Application {
 }
 ```
 
-Ordinary applications depend on `net.hasor:hasor-boot:@project.docsVersion@`; Web applications need one container module. Close one-shot applications after completing their work instead of calling `join()`. See [Project Configuration](./project-config.md).
+Ordinary applications depend on `net.hasor:hasor-boot:@project.lastReleaseVer@`; Web applications need one container module. Close one-shot applications after completing their work instead of calling `join()`. See [Project Configuration](./project-config.md).
 
 If no scan scope is explicitly configured, Boot scans each source package and its subpackages, combining distinct source packages. An explicit `hasor.loadPackages` or `HASOR_LOAD_PACKAGES` takes precedence; an empty `hasor.loadPackages` disables scanning. Without sources, Boot retains the Core defaults.
 

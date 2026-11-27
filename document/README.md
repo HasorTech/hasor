@@ -16,17 +16,17 @@ npm run build
 
 ## 文档版本变量
 
-`plugins/projectVars.js` 是文档版本信息的统一入口：`docsVersion` 用于使用指南和依赖示例，`lastReleaseVer`、`lastReleaseTime` 用于最新发布信息。
+`package.json` 维护当前正式版本 `version` 和发布日期 `lastReleaseTime`。文档中的 `lastReleaseVer` 读取 `version`。
 
-在 Markdown/MDX 正文、行内代码、代码块和 Markdown 链接中使用 `@project.docsVersion@`，构建时会替换为实际版本号。例如：
+在 Markdown/MDX 正文、行内代码、代码块和 Markdown 链接中使用 `@project.lastReleaseVer@`，构建时会替换为实际版本号。例如：
 
 ```xml
-<version>@project.docsVersion@</version>
+<version>@project.lastReleaseVer@</version>
 ```
 
-也可使用 `@project.lastReleaseVer@` 和 `@project.lastReleaseTime@`。变量名拼错会使构建失败。代码块显示及复制的内容均为替换后的实际版本号。
+发布日期使用 `@project.lastReleaseTime@`。变量名拼错会使构建失败。代码块显示及复制的内容均为替换后的实际版本号。
 
-后续修改 `projectVars.js` 后重新构建即可；本地预览需重启。历史发布页及版本目录链接保持固定版本，不随变量变化。此配置不修改 Gradle 工程版本、文档站点 package.json 或仓库 README 中的版本。
+修改 `package.json` 的 `version` 和 `lastReleaseTime` 后重新构建。版本号变更时同步 `package-lock.json`；本地预览需重启。历史发布页及版本目录链接保持固定版本，不随变量变化。此配置不修改 Gradle 工程或仓库 README 中的版本。
 
 ## 英文文档同步
 
@@ -40,7 +40,7 @@ npm run build
 
 入口介绍复用中英文概览正文。`docusaurus.config.js` 中的 `overview` 指定每种语言文档目录下的 `guides/getting-started/overview.md`；插件读取对应语言文件中 `{/* llms:start */}` 与 `{/* llms:end */}` 之间的普通 Markdown。维护项目定位、架构与起步流程时修改这段正文即可，文档页面和 AI 入口会一起更新。
 
-摘要中的链接使用实际发布地址，可写成相对于概览的路径；插件会移除 `.md`、`.mdx` 扩展名并补齐站点地址与语言前缀。文档版本来自 `plugins/projectVars.js`，使用前应核对项目依赖版本。
+摘要中的链接使用实际发布地址，可写成相对于概览的路径；插件会移除 `.md`、`.mdx` 扩展名并补齐站点地址与语言前缀。当前正式版本来自 `package.json`，使用前应核对项目依赖版本。
 
 可以向编程助手提供以下指引：
 

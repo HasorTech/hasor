@@ -1,6 +1,7 @@
 {
   "name": "hasor-doc",
-  "version": "5.2.0",
+  "version": "5.4.0",
+  "lastReleaseTime": "2026-11-27",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",

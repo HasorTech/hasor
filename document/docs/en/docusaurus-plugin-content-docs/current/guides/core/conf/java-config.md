@@ -13,7 +13,7 @@ description: Declare Beans, restrict scanning, and configure Web MVC with hasor-
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-config</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 ```
 

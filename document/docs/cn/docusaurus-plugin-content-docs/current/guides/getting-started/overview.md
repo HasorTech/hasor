@@ -36,7 +36,7 @@ Hasor 是一个采用微内核架构的 Java 开发框架，支持按需组装�
 
 ## 运行环境
 
-Hasor `@project.docsVersion@` 需要 JDK 17 或以上版本。源码构建使用仓库自带的 Gradle Wrapper。
+Hasor `@project.lastReleaseVer@` 需要 JDK 17 或以上版本。源码构建使用仓库自带的 Gradle Wrapper。
 
 ## 特点
 

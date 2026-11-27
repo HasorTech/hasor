@@ -13,7 +13,7 @@ description: 使用 hasor-config 声明 Bean、限定扫描范围并配置 Web M
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-config</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 ```
 

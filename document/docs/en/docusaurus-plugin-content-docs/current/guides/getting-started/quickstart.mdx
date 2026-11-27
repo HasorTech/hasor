@@ -17,7 +17,7 @@ Applications require JDK 17 or later.
 
 ## Adding hasor-core
 
-The following examples use Hasor `@project.docsVersion@`.
+The following examples use Hasor `@project.lastReleaseVer@`.
 
 <Tabs>
   <TabItem value="Maven" label="Maven" default>
@@ -26,7 +26,7 @@ The following examples use Hasor `@project.docsVersion@`.
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-core</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 ```
 
@@ -34,7 +34,7 @@ The following examples use Hasor `@project.docsVersion@`.
   <TabItem value="Gradle" label="Gradle">
 
 ```text
-implementation "net.hasor:hasor-core:@project.docsVersion@"
+implementation "net.hasor:hasor-core:@project.lastReleaseVer@"
 ```
 
   </TabItem>
@@ -114,7 +114,7 @@ Add `hasor-web` for Web MVC:
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-web</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 ```
 
@@ -124,7 +124,7 @@ Use a Maven or Gradle packaging plugin for an executable Fat Jar. Web applicatio
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-boot-web-tomcat</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 ```
 

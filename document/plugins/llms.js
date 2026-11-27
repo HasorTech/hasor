@@ -8,8 +8,7 @@
 const {loadFreshModule} = require('@docusaurus/utils');
 const {readFile, writeFile} = require('node:fs/promises');
 const path = require('node:path');
-const projectVars = require('./projectVars.js');
-const {replaceVariables} = require('./remark-project-vars.js');
+const {projectVars, replaceVariables} = require('./projectVars.js');
 
 module.exports = async function llmsPlugin(context, {overview, descriptions, ...options}) {
     const createPlugin = await loadFreshModule(require.resolve('@signalwire/docusaurus-plugin-llms-txt'));
@@ -70,7 +69,7 @@ module.exports = async function llmsPlugin(context, {overview, descriptions, ...
                 {type: 'heading', depth: 1, children: [{type: 'text', value: options.siteTitle}]},
                 ...summary.children,
                 {type: 'paragraph', children: [{type: 'text', value:
-                    (english ? 'Guide version: ' : '使用指南版本：') + projectVars.docsVersion +
+                    (english ? 'Current version: ' : '当前版本：') + projectVars.lastReleaseVer +
                     (english ? '. Match the project dependency version to the relevant guides and release notes.' :
                         '。使用时先核对项目依赖版本，再参考对应指南与版本说明。')}]},
             ]};
@@ -111,7 +110,7 @@ module.exports = async function llmsPlugin(context, {overview, descriptions, ...
 async function readOverview({siteDir, siteConfig, i18n}, overview, markdown, base) {
     const directory = 'docs/' + i18n.localeConfigs[i18n.currentLocale].path + '/docusaurus-plugin-content-docs/current';
     const file = path.join(siteDir, directory, overview);
-    const source = replaceVariables(await readFile(file, 'utf8'), projectVars);
+    const source = replaceVariables(await readFile(file, 'utf8'));
     const sections = [...source.matchAll(/\{\/\* llms:start \*\/\}([\s\S]*?)\{\/\* llms:end \*\/\}/g)];
     if (sections.length !== 1) {
         throw new Error('Expected one llms summary in ' + file);

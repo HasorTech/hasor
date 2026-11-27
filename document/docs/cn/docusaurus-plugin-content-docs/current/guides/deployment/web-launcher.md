@@ -35,7 +35,7 @@ Web 启动至少需要加入一个内嵌容器模块：
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-boot-web-tomcat</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 ```
 
@@ -80,7 +80,7 @@ Web 启动至少需要加入一个内嵌容器模块：
 因此也可以通过环境变量调整运行端口：
 
 ```bash
-HASOR_HTTP_PORT=9090 java -jar demo-hasor-boot-web-@project.docsVersion@.jar
+HASOR_HTTP_PORT=9090 java -jar demo-hasor-boot-web-@project.lastReleaseVer@.jar
 ```
 
 ## 编码方式创建 WebServer

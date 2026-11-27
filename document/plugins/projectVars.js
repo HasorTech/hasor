@@ -1,7 +1,17 @@
-// Published and development versions.
-module.exports = {
-    docsVersion: "5.3.0",
-    developmentVersion: "5.3.1-SNAPSHOT",
-    lastReleaseVer: "5.3.0",
-    lastReleaseTime: "2026-10-05"
+const {version: lastReleaseVer, lastReleaseTime} = require('../package.json');
+
+const projectVars = {
+    lastReleaseVer,
+    lastReleaseTime
 };
+
+function replaceVariables(value) {
+    return value.replace(/@project\.([A-Za-z][A-Za-z0-9_]*)@/g, (token, name) => {
+        if (!Object.hasOwn(projectVars, name) || typeof projectVars[name] !== 'string') {
+            throw new Error(`Unknown or invalid project variable: ${token}`);
+        }
+        return projectVars[name];
+    });
+}
+
+module.exports = {projectVars, replaceVariables};

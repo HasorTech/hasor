@@ -7,7 +7,7 @@ description: Configure Hasor Boot dependencies and Maven or Gradle executable ar
 
 # 5.1 Project Configuration
 
-Hasor Boot project configuration has two parts: runtime dependencies and Maven/Gradle packaging plugins. Ordinary applications need only the core dependency and packaging plugin; Web applications also select an embedded container module. The following examples use Hasor `@project.docsVersion@`.
+Hasor Boot project configuration has two parts: runtime dependencies and Maven/Gradle packaging plugins. Ordinary applications need only the core dependency and packaging plugin; Web applications also select an embedded container module. The following examples use Hasor `@project.lastReleaseVer@`.
 
 ## Ordinary application dependencies
 
@@ -17,7 +17,7 @@ Add `hasor-boot` for an ordinary application using the unified `Boot.run(...)` e
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-boot</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 ```
 
@@ -31,12 +31,12 @@ Web applications need `hasor-web` and one embedded container module:
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-web</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-boot-web-tomcat</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 ```
 
@@ -70,7 +70,7 @@ The Hasor Boot Maven plugin repackages the ordinary jar as an executable archive
         <plugin>
             <groupId>net.hasor</groupId>
             <artifactId>hasor-boot-maven-plugin</artifactId>
-            <version>@project.docsVersion@</version>
+            <version>@project.lastReleaseVer@</version>
             <executions>
                 <execution>
                     <goals>
@@ -97,13 +97,13 @@ Maven package generates a runnable Hasor Boot archive in the target directory.
 
 ```bash
 mvn package
-java -jar target/demo-hasor-boot-basic-@project.docsVersion@.jar
+java -jar target/demo-hasor-boot-basic-@project.lastReleaseVer@.jar
 ```
 
 Web applications run with the same `java -jar` command:
 
 ```bash
-java -jar target/demo-hasor-boot-web-@project.docsVersion@.jar
+java -jar target/demo-hasor-boot-web-@project.lastReleaseVer@.jar
 ```
 
 ## Gradle packaging plugin
@@ -123,7 +123,7 @@ rootProject.name = 'demo'
 ```groovy title="build.gradle"
 plugins {
     id 'java'
-    id 'net.hasor.boot' version '@project.docsVersion@'
+    id 'net.hasor.boot' version '@project.lastReleaseVer@'
 }
 
 version = '1.0.0'
@@ -138,8 +138,8 @@ configurations {
     bootLoader
 }
 dependencies {
-    implementation 'net.hasor:hasor-boot:@project.docsVersion@'
-    bootLoader 'net.hasor:hasor-boot-loader:@project.docsVersion@'
+    implementation 'net.hasor:hasor-boot:@project.lastReleaseVer@'
+    bootLoader 'net.hasor:hasor-boot-loader:@project.lastReleaseVer@'
 }
 tasks.named('bootJar') {
     mainClass.set('com.example.Application')

@@ -5,7 +5,7 @@ const prismReactRenderer = require('prism-react-renderer');
 const lightCodeTheme = prismReactRenderer.themes ? prismReactRenderer.themes.github : require('prism-react-renderer/themes/github');
 const darkCodeTheme = prismReactRenderer.themes ? prismReactRenderer.themes.dracula : require('prism-react-renderer/themes/dracula');
 const {onlineOrigins} = require('./hasor-tech/routes');
-const projectVars = require('./plugins/projectVars.js');
+const {projectVars, replaceVariables} = require('./plugins/projectVars.js');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = require('./hasor-tech/config')({
@@ -15,11 +15,11 @@ const config = require('./hasor-tech/config')({
     baseUrl: process.env.DOCS_BASE_URL || '/',
     onBrokenLinks: 'throw',
     markdown: {
-        preprocessor: ({fileContent}) => require('./plugins/remark-project-vars.js').replaceVariables(fileContent, projectVars),
+        preprocessor: ({fileContent}) => replaceVariables(fileContent),
         // Resolve variables before extracting metadata or recognizing Markdown links.
         parseFrontMatter: ({filePath, fileContent, defaultParseFrontMatter}) => defaultParseFrontMatter({
             filePath,
-            fileContent: require('./plugins/remark-project-vars.js').replaceVariables(fileContent, projectVars),
+            fileContent: replaceVariables(fileContent),
         }),
         hooks: {
             onBrokenMarkdownLinks: 'warn',
@@ -41,7 +41,6 @@ const config = require('./hasor-tech/config')({
             ({
                 docs: {
                     path: 'docs/cn/docusaurus-plugin-content-docs/current',
-                    remarkPlugins: [[require('./plugins/remark-project-vars.js'), projectVars]],
                     sidebarPath: require.resolve('./sidebars.js'),
                     editLocalizedFiles: true,
                     editUrl: 'https://gitee.com/hasortech/hasor/blob/main/document/',
@@ -85,8 +84,8 @@ const config = require('./hasor-tech/config')({
                 siteTitle: 'Hasor',
                 overview: 'guides/getting-started/overview.md',
                 descriptions: {
-                    'zh-cn': `Hasor ${projectVars.docsVersion} 文档：依赖注入、配置、Web MVC 和应用启动。开发版本在版本说明中单独标注。`,
-                    en: `Hasor ${projectVars.docsVersion} documentation: dependency injection, configuration, Web MVC, and application startup. Development releases are marked separately.`,
+                    'zh-cn': `Hasor ${projectVars.lastReleaseVer} 文档：依赖注入、配置、Web MVC 和应用启动。`,
+                    en: `Hasor ${projectVars.lastReleaseVer} documentation: dependency injection, configuration, Web MVC, and application startup.`,
                 },
                 depth: 2,
                 onRouteError: 'throw',

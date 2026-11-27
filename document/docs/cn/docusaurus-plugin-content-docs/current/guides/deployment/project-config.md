@@ -7,7 +7,7 @@ description: 配置 Hasor Boot 依赖以及 Maven、Gradle 可执行包插件。
 
 # 5.1 工程配置
 
-Hasor Boot 的工程配置分为两部分：运行期依赖和 Maven/Gradle 打包插件。普通应用只需要核心依赖和打包插件；Web 应用还需要选择一个内嵌容器模块。以下示例使用 Hasor `@project.docsVersion@`。
+Hasor Boot 的工程配置分为两部分：运行期依赖和 Maven/Gradle 打包插件。普通应用只需要核心依赖和打包插件；Web 应用还需要选择一个内嵌容器模块。以下示例使用 Hasor `@project.lastReleaseVer@`。
 
 ## 普通应用依赖
 
@@ -17,7 +17,7 @@ Hasor Boot 的工程配置分为两部分：运行期依赖和 Maven/Gradle 打�
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-boot</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 ```
 
@@ -31,12 +31,12 @@ Web 应用需要 `hasor-web`，并选择一个内嵌容器模块：
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-web</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 <dependency>
     <groupId>net.hasor</groupId>
     <artifactId>hasor-boot-web-tomcat</artifactId>
-    <version>@project.docsVersion@</version>
+    <version>@project.lastReleaseVer@</version>
 </dependency>
 ```
 
@@ -70,7 +70,7 @@ Hasor Boot Maven 插件会在 `package` 阶段把普通 jar 重打包成可执�
         <plugin>
             <groupId>net.hasor</groupId>
             <artifactId>hasor-boot-maven-plugin</artifactId>
-            <version>@project.docsVersion@</version>
+            <version>@project.lastReleaseVer@</version>
             <executions>
                 <execution>
                     <goals>
@@ -97,13 +97,13 @@ Hasor Boot Maven 插件会在 `package` 阶段把普通 jar 重打包成可执�
 
 ```bash
 mvn package
-java -jar target/demo-hasor-boot-basic-@project.docsVersion@.jar
+java -jar target/demo-hasor-boot-basic-@project.lastReleaseVer@.jar
 ```
 
 Web 应用也使用同样的 `java -jar` 方式运行：
 
 ```bash
-java -jar target/demo-hasor-boot-web-@project.docsVersion@.jar
+java -jar target/demo-hasor-boot-web-@project.lastReleaseVer@.jar
 ```
 
 ## Gradle 打包插件
@@ -123,7 +123,7 @@ rootProject.name = 'demo'
 ```groovy title="build.gradle"
 plugins {
     id 'java'
-    id 'net.hasor.boot' version '@project.docsVersion@'
+    id 'net.hasor.boot' version '@project.lastReleaseVer@'
 }
 
 version = '1.0.0'
@@ -138,8 +138,8 @@ configurations {
     bootLoader
 }
 dependencies {
-    implementation 'net.hasor:hasor-boot:@project.docsVersion@'
-    bootLoader 'net.hasor:hasor-boot-loader:@project.docsVersion@'
+    implementation 'net.hasor:hasor-boot:@project.lastReleaseVer@'
+    bootLoader 'net.hasor:hasor-boot-loader:@project.lastReleaseVer@'
 }
 tasks.named('bootJar') {
     mainClass.set('com.example.Application')

@@ -20,7 +20,7 @@ public class Application {
 }
 ```
 
-普通应用依赖 `net.hasor:hasor-boot:@project.docsVersion@`；Web 应用引入一个容器模块即可。一次性任务完成后关闭应用，不调用 `join()`。参见[工程配置](./project-config.md)。
+普通应用依赖 `net.hasor:hasor-boot:@project.lastReleaseVer@`；Web 应用引入一个容器模块即可。一次性任务完成后关闭应用，不调用 `join()`。参见[工程配置](./project-config.md)。
 
 未显式配置扫描范围时，Boot 扫描所有 `sources` 所在包及其子包，多个包去重后取并集。显式配置 `hasor.loadPackages` 或 `HASOR_LOAD_PACKAGES` 时使用指定范围；`hasor.loadPackages` 设置为空字符串可关闭扫描。没有传入 source 时沿用 Core 默认配置。
 

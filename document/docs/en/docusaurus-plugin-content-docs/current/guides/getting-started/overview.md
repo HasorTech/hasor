@@ -36,7 +36,7 @@ The [quick start](./quickstart.mdx) provides dependencies and code. For annotati
 
 ## Runtime requirements
 
-Hasor `@project.docsVersion@` requires JDK 17 or later. Build the source using the repository Gradle Wrapper.
+Hasor `@project.lastReleaseVer@` requires JDK 17 or later. Build the source using the repository Gradle Wrapper.
 
 ## Features
 
